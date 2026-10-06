@@ -1,0 +1,1101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CourtSync — Padel club software</title>
+<meta name="description" content="The operating system for padel clubs. Bookings, payments, live scores and leagues — on every court, at once.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://courtsynk.netlify.app/">
+<meta property="og:site_name" content="CourtSync">
+<meta property="og:title" content="CourtSync — Padel club software">
+<meta property="og:description" content="The operating system for padel clubs. Bookings, payments, live scores and leagues — on every court, at once.">
+<meta property="og:image" content="https://courtsynk.netlify.app/og.png">
+<meta property="og:image:secure_url" content="https://courtsynk.netlify.app/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CourtSync — a padel court seen from above with the CourtSync name on it">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CourtSync — Padel club software">
+<meta name="twitter:description" content="The operating system for padel clubs. Bookings, payments, live scores and leagues.">
+<meta name="twitter:image" content="https://courtsynk.netlify.app/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230E1428'/%3E%3Cg fill='none' stroke='%23C8FF1F' stroke-width='3' stroke-linecap='round'%3E%3Ccircle cx='16' cy='16' r='10'/%3E%3Cpath d='M8.5 9.5c3.5 3 3.5 10 0 13M23.5 9.5c-3.5 3-3.5 10 0 13'/%3E%3C/g%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F3EF}
+*{box-sizing:border-box}
+a{color:#0E1428;text-decoration:none}a:hover{color:#2348E0}
+.cd{font-family:Archivo,sans-serif;font-stretch:68%;font-weight:900;text-transform:uppercase;line-height:0.84;letter-spacing:-0.01em}
+.wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.btn{min-height:50px;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 24px;border-radius:12px;font-family:Archivo,sans-serif;font-weight:800;font-size:15px;border:0;cursor:pointer;white-space:nowrap;transition:transform .25s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn .ar{transition:transform .25s ease}.btn:hover .ar{transform:translateX(4px)}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:0.16em;color:#5B6478}
+
+/* ===== HERO ===== */
+.scene{position:relative;height:calc(min(100svh,900px) * 6);view-timeline:--cs block}
+.stage{position:sticky;top:0;height:min(100svh,900px);min-height:640px;overflow:hidden;perspective:1100px;perspective-origin:50% 30%;background:radial-gradient(80% 60% at 50% 40%,#FFFFFF 0%,#F2F3EF 60%,#E6E8E2 100%)}
+.lights{position:absolute;left:0;right:0;top:0;height:30%;background:radial-gradient(14% 40% at 22% 0%,rgba(255,255,255,0.9),transparent 70%),radial-gradient(14% 40% at 50% 0%,rgba(255,255,255,0.9),transparent 70%),radial-gradient(14% 40% at 78% 0%,rgba(255,255,255,0.9),transparent 70%);pointer-events:none}
+.court{position:absolute;left:50%;top:50%;width:76vw;height:38vw;margin:-19vw 0 0 -38vw;background:#2348E0;box-shadow:0 0 0 0.7vw rgba(255,255,255,0.9),0 0 0 0.9vw rgba(14,20,40,0.12),0 4vw 8vw -2vw rgba(14,20,40,0.35);transform-origin:50% 50%;transform:translate(0,4vw) scale(1) rotateX(64deg);will-change:transform,opacity}
+.court .ln{position:absolute;background:rgba(255,255,255,0.95)}
+.mesh{position:absolute;left:20%;right:20%;height:0.9vw;background:repeating-linear-gradient(90deg,rgba(14,20,40,0.5) 0 2px,transparent 2px 9px)}
+.post{position:absolute;width:0.9vw;height:0.9vw;background:#0E1428}
+.word{position:absolute;top:0;bottom:0;width:50%;display:flex;align-items:center;justify-content:center;color:#C8FF1F;font-size:15vw;opacity:0}
+.pl{position:absolute;width:3vw;height:3vw;margin:-1.5vw 0 0 -1.5vw}
+.pl .sh{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,0.45);transform:translate(0.7vw,0.9vw);filter:blur(0.3vw)}
+.pl .bd{position:absolute;left:-0.4vw;right:-0.4vw;top:0.6vw;bottom:0.6vw;border-radius:50%}
+.pl .hd{position:absolute;left:0.75vw;top:0.75vw;width:1.5vw;height:1.5vw;border-radius:50%}
+.pl .rk{position:absolute;width:1.4vw;height:1.8vw;border-radius:50% 50% 45% 45%;background:#0E1428;border:0.25vw solid #C8FF1F}
+.ball{position:absolute;width:1vw;height:1vw;margin:-0.5vw 0 0 -0.5vw;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F7FFB8,#C8FF1F 55%,#9CC000);box-shadow:0 0 1.8vw 0.4vw rgba(200,255,31,0.85);animation:ball 3.2s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes ball{0%{left:28%;top:70%}25%{left:73%;top:32%}50%{left:80%;top:66%}75%{left:22%;top:34%}100%{left:28%;top:70%}}
+.a1{animation:p1 3.2s ease-in-out infinite}.a2{animation:p2 3.2s ease-in-out infinite}.b1{animation:p3 3.2s ease-in-out infinite}.b2{animation:p4 3.2s ease-in-out infinite}
+@keyframes p1{0%,100%{transform:translate(0,0)}50%{transform:translate(1.2vw,-2vw)}}
+@keyframes p2{0%,100%{transform:translate(0,0)}25%{transform:translate(1.5vw,0.8vw)}75%{transform:translate(-1vw,-1vw)}}
+@keyframes p3{0%,100%{transform:translate(0,0)}25%{transform:translate(-1vw,1.4vw)}}
+@keyframes p4{0%,100%{transform:translate(0,0)}50%{transform:translate(-1.6vw,-1.2vw)}}
+.glass{position:absolute;inset:0;z-index:3;pointer-events:none;transform-origin:50% 45%}
+.pane{position:absolute;inset:0;background:linear-gradient(180deg,rgba(170,195,230,0.10),rgba(170,195,230,0.03) 60%,rgba(170,195,230,0.10)),linear-gradient(112deg,transparent 14%,rgba(255,255,255,0.55) 17%,rgba(255,255,255,0.12) 21%,transparent 23%),linear-gradient(112deg,transparent 56%,rgba(255,255,255,0.4) 58%,transparent 62%),linear-gradient(112deg,transparent 70%,rgba(255,255,255,0.3) 71%,transparent 72.5%)}
+.mark{position:absolute;left:0;right:0;bottom:calc(50% + 6vw + max(2vw, 16px));z-index:2;text-align:center;color:#0E1428;font-size:min(15vw,22svh,198px);pointer-events:none;transform-origin:50% 100%}
+.cap{opacity:0}
+.gl{background:rgba(255,255,255,0.62);border:1px solid rgba(255,255,255,0.9);box-shadow:0 20px 50px -24px rgba(14,20,40,0.35),inset 0 1px 0 rgba(255,255,255,0.9);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4)}
+.hint{animation:hint 1.8s ease-in-out infinite}
+@keyframes hint{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.dot{animation:dot 1.6s ease-in-out infinite}
+@keyframes dot{0%,100%{box-shadow:0 0 0 0 rgba(200,255,31,0.9)}50%{box-shadow:0 0 0 6px rgba(200,255,31,0)}}
+
+/* ===== PAGE ===== */
+.sheet{position:relative;z-index:10;margin-top:calc(min(100svh,900px) * -1);background:#FFFFFF;border-radius:40px 40px 0 0;box-shadow:0 -30px 60px -30px rgba(14,20,40,0.25)}
+.steprow{display:grid;grid-template-columns:200px minmax(0,1fr) 300px;gap:48px;align-items:center;padding:44px 0;border-top:1px solid #E4E7E1}
+.snum{font-size:120px}
+.art{height:120px;border-radius:16px;background:#F2F3EF;display:flex;align-items:center;justify-content:center}
+.feat4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
+.appg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:stretch}
+.gantt{display:grid;grid-template-columns:90px repeat(16,minmax(0,1fr));row-gap:8px}
+.stmt{position:relative;height:calc(min(100svh,900px) * 2);view-timeline:--st block}
+.stmt-in{position:sticky;top:0;height:min(100svh,900px);display:flex;align-items:center;justify-content:center;padding:0 40px}
+.w{opacity:0.14}
+.rv{} .rvs{}
+
+@supports (animation-timeline: view()){
+@media (prefers-reduced-motion: no-preference){
+.court,.glass,.mark,.word,.cap,.lede,.lights{animation-timing-function:linear;animation-fill-mode:both;animation-timeline:--cs;animation-range:contain 0% contain 100%}
+.court{animation-name:rise}
+@keyframes rise{
+0%,8%{transform:translate(0,4vw) scale(1) rotateX(64deg);opacity:1}
+42%,52%{transform:translate(0,0) scale(1) rotateX(0deg);opacity:1}
+70%,78%{transform:translate(0,-7vw) scale(0.62) rotateX(0deg);opacity:1}
+100%{transform:translate(0,-22vw) scale(0.4) rotateX(0deg);opacity:0}}
+.glass{animation-name:glass}
+@keyframes glass{0%,8%{opacity:1;transform:scale(1)}26%,100%{opacity:0;transform:scale(2.4)}}
+.mark{animation-name:mark}
+@keyframes mark{0%,8%{opacity:1;transform:translateY(0) scale(1)}22%,100%{opacity:0;transform:translateY(-6vw) scale(1.08)}}
+.word{animation-name:word}
+@keyframes word{0%,28%{opacity:0}40%,100%{opacity:1}}
+.cap{animation-name:cap}
+@keyframes cap{0%,60%{opacity:0;transform:translateY(40px)}72%,78%{opacity:1;transform:translateY(0)}90%,100%{opacity:0;transform:translateY(-40px)}}
+.lede{animation-name:lede}
+@keyframes lede{0%,5%{opacity:1;transform:translateY(0)}17%,100%{opacity:0;transform:translateY(20px)}}
+.lights{animation-name:lede}
+
+.rv{animation:rv linear both;animation-timeline:view();animation-range:entry 0% entry 60%}
+@keyframes rv{from{opacity:0;transform:translateY(60px)}}
+.rvs{animation:rvs linear both;animation-timeline:view();animation-range:entry 0% cover 40%}
+@keyframes rvs{from{opacity:0;transform:translateY(120px) scale(0.94)}}
+.px{animation:px linear both;animation-timeline:view();animation-range:cover}
+@keyframes px{from{transform:translateY(70px)}to{transform:translateY(-70px)}}
+.drawl{stroke-dasharray:400;animation:drawl linear both;animation-timeline:view();animation-range:entry 20% cover 50%}
+@keyframes drawl{from{stroke-dashoffset:400}to{stroke-dashoffset:0}}
+.bar{transform-origin:0 50%;animation:bar linear both;animation-timeline:view();animation-range:entry 10% cover 45%}
+@keyframes bar{from{transform:scaleX(0)}}
+.w{animation:w linear both;animation-timeline:--st}
+@keyframes w{to{opacity:1}}
+}}
+@supports not (animation-timeline: view()){.w{opacity:1}}
+@media (prefers-reduced-motion: reduce){.ball,.a1,.a2,.b1,.b2,.hint,.dot{animation:none}.w{opacity:1}}
+@media (max-width:1000px){.navl{display:none !important}.hud{display:none !important}.steprow{grid-template-columns:110px minmax(0,1fr);gap:20px 32px;align-items:start}.snum{font-size:88px}.steprow .art{grid-column:2;height:100px}.feat4{grid-template-columns:repeat(2,minmax(0,1fr))}.appg,.tiers{grid-template-columns:minmax(0,1fr)}.hide-sm{display:none !important}}
+@media (max-width:640px){.wrap{padding:0 18px}.h2{font-size:56px !important}.feat4{grid-template-columns:minmax(0,1fr)}.lede{left:16px !important;right:16px !important;max-width:none !important}.mouse{display:none !important}
+.steprow{grid-template-columns:minmax(0,1fr);gap:14px;padding:36px 0}.snum{font-size:72px}.steprow .art{grid-column:auto;height:96px}}
+</style>
+
+<style>
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+html{scroll-padding-top:90px}
+:focus-visible{outline:3px solid #2348E0;outline-offset:3px}
+button:disabled{cursor:progress}
+.blk:hover{filter:brightness(1.06)}
+[data-game]:hover,[data-chip]:hover,#app-join:hover,#app-cta:hover{filter:brightness(0.97)}
+
+/* sticky nav */
+.snav{position:fixed;left:50%;top:12px;z-index:100;width:min(1120px,calc(100% - 24px));display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 8px 8px 14px;border-radius:16px;
+  background:rgba(255,255,255,0.78);border:1px solid rgba(14,20,40,0.08);box-shadow:0 18px 40px -24px rgba(14,20,40,0.45);
+  backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);
+  transform:translate(-50%,-140%);transition:transform .45s cubic-bezier(.2,.8,.2,1);font-family:Archivo,sans-serif}
+.snav.on{transform:translate(-50%,0)}
+.snav a{color:#0E1428;text-decoration:none}
+.snav-links{display:flex;gap:4px;font-size:14px;font-weight:600}
+.snav-links a{padding:9px 12px;border-radius:9px}.snav-links a:hover{background:rgba(14,20,40,0.06)}
+@media (max-width:860px){.snav-links{display:none}}
+
+/* demo dialog */
+#demo{width:min(560px,calc(100% - 24px));max-height:calc(100% - 24px);padding:0;border:0;border-radius:24px;background:#FFFFFF;color:#0E1428;box-shadow:0 40px 100px -30px rgba(14,20,40,0.6);font-family:Archivo,sans-serif}
+#demo::backdrop{background:rgba(14,20,40,0.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#demo[open]{animation:dlg .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes dlg{from{opacity:0;transform:translateY(24px) scale(.97)}}
+@media (prefers-reduced-motion: reduce){#demo[open]{animation:none}}
+.dlg-in{position:relative;padding:32px}
+.dlg-x{position:absolute;right:16px;top:16px;width:44px;height:44px;border-radius:50%;border:0;background:#F2F3EF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.fld{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700;color:#3A4256;flex:1 1 200px;min-width:0}
+.fld input,.fld select,.fld textarea{font:500 16px Archivo,sans-serif;color:#0E1428;background:#F2F3EF;border:1px solid #DADDD6;border-radius:12px;padding:0 14px;height:50px;width:100%}
+.fld textarea{height:auto;padding:12px 14px;resize:vertical}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:2px solid #2348E0;outline-offset:1px;background:#FFFFFF}
+.row2{display:flex;gap:12px;flex-wrap:wrap}
+
+/* toast */
+#cs-toast{position:fixed;left:50%;bottom:24px;z-index:200;transform:translate(-50%,140%);max-width:calc(100% - 32px);padding:14px 20px;border-radius:14px;background:#0E1428;color:#FFFFFF;font:700 15px Archivo,sans-serif;box-shadow:0 20px 40px -20px rgba(14,20,40,0.7);transition:transform .35s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+#cs-toast::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#C8FF1F;margin-right:10px;vertical-align:middle}
+#cs-toast.on{transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<header id="snav" class="snav" aria-hidden="true">
+  <a href="#top" aria-label="CourtSync home" style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:30px;border-radius:9px;background:#0E1428;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M5.5 6.5c3 2.5 3 8.5 0 11M18.5 6.5c-3 2.5-3 8.5 0 11"></path></svg></span><span class="cd" style="font-size:22px">CourtSync</span></a>
+  <nav class="snav-links" aria-label="Sections">
+    <a href="#how">How it works</a><a href="#product">Product</a><a href="#players">Players</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a>
+  </nav>
+  <a href="#demo" data-open="demo" class="btn" style="min-height:44px;padding:0 18px;background:#C8FF1F;color:#0E1428;font-size:14px">Book a demo</a>
+</header>
+
+
+
+<div style="font-family: Archivo, sans-serif; color: #0E1428; background: #F2F3EF">
+
+<!-- ======================= HERO ======================= -->
+
+
+<!-- ======================= PAGE SHEET (slides over the hero) ======================= -->
+<section id="top" class="scene" aria-label="CourtSync — through the glass, then above the court">
+  <div class="stage">
+    <div class="lights" aria-hidden="true"></div>
+
+    <div class="court" aria-hidden="true">
+      <span class="ln" style="left: 0; right: 0; top: 0; height: 0.35vw"></span>
+      <span class="ln" style="left: 0; right: 0; bottom: 0; height: 0.35vw"></span>
+      <span class="ln" style="top: 0; bottom: 0; left: 0; width: 0.35vw"></span>
+      <span class="ln" style="top: 0; bottom: 0; right: 0; width: 0.35vw"></span>
+      <span class="ln" style="top: 0; bottom: 0; left: 15.25%; width: 0.3vw"></span>
+      <span class="ln" style="top: 0; bottom: 0; left: 84.75%; width: 0.3vw"></span>
+      <span class="ln" style="left: 15.25%; right: 15.25%; top: 50%; height: 0.3vw; margin-top: -0.15vw"></span>
+      <span class="mesh" style="top: -1.6vw"></span>
+      <span class="mesh" style="bottom: -1.6vw"></span>
+      <span class="post" style="left: -1.6vw; top: -1.6vw"></span>
+      <span class="post" style="right: -1.6vw; top: -1.6vw"></span>
+      <span class="post" style="left: -1.6vw; bottom: -1.6vw"></span>
+      <span class="post" style="right: -1.6vw; bottom: -1.6vw"></span>
+      <span class="post" style="left: 20%; top: -1.6vw"></span>
+      <span class="post" style="left: 80%; top: -1.6vw"></span>
+      <span class="post" style="left: 20%; bottom: -1.6vw"></span>
+      <span class="post" style="left: 80%; bottom: -1.6vw"></span>
+      <span class="word cd" style="left: 0">Court</span>
+      <span class="word cd" style="right: 0">Sync</span>
+      <span style="position: absolute; left: 50%; top: -2.4vw; bottom: -2.4vw; width: 0.55vw; margin-left: -0.27vw; background: #0E1428; box-shadow: 0.5vw 0.3vw 0.6vw rgba(0,0,0,0.45)"></span>
+      <span style="position: absolute; left: 50%; top: -2.8vw; width: 1.4vw; height: 1.4vw; margin-left: -0.7vw; border-radius: 50%; background: #0E1428"></span>
+      <span style="position: absolute; left: 50%; bottom: -2.8vw; width: 1.4vw; height: 1.4vw; margin-left: -0.7vw; border-radius: 50%; background: #0E1428"></span>
+      <span class="pl a1" style="left: 18%; top: 30%"><span class="sh"></span><span class="bd" style="background: #F4F4F0"></span><span class="hd" style="background: #0E1428"></span><span class="rk" style="left: 2.6vw; top: -0.8vw"></span></span>
+      <span class="pl a2" style="left: 30%; top: 72%"><span class="sh"></span><span class="bd" style="background: #F4F4F0"></span><span class="hd" style="background: #FFFFFF; box-shadow: inset 0 0 0 0.25vw #0E1428"></span><span class="rk" style="left: 2.6vw; top: 1.4vw"></span></span>
+      <span class="pl b1" style="left: 70%; top: 28%"><span class="sh"></span><span class="bd" style="background: #0E1428; box-shadow: 0 0 0 0.2vw rgba(255,255,255,0.5)"></span><span class="hd" style="background: #C8FF1F"></span><span class="rk" style="left: -1.6vw; top: -0.6vw"></span></span>
+      <span class="pl b2" style="left: 82%; top: 70%"><span class="sh"></span><span class="bd" style="background: #0E1428; box-shadow: 0 0 0 0.2vw rgba(255,255,255,0.5)"></span><span class="hd" style="background: #F4F4F0"></span><span class="rk" style="left: -1.6vw; top: 1.4vw"></span></span>
+      <span class="ball"></span>
+    </div>
+
+    <div class="mark cd" aria-hidden="true">CourtSync</div>
+
+    <div class="glass" aria-hidden="true">
+      <div class="pane"></div>
+      <div class="hud" style="position: absolute; right: 32px; bottom: 32px; padding: 14px 18px; border-radius: 12px; background: #0E1428; color: #FFFFFF; box-shadow: 0 20px 40px -20px rgba(14,20,40,0.6); min-width: 210px">
+        <div style="display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: #C8FF1F; margin-bottom: 8px"><span class="dot" style="width: 7px; height: 7px; border-radius: 50%; background: #C8FF1F"></span>LIVE · COURT 02</div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 18px"><span style="font-size: 13px; color: #D5DAE6">Set 3 · Game 8</span><span class="cd" style="font-size: 36px">40–15</span></div>
+      </div>
+    </div>
+
+    <header style="position: absolute; left: 0; right: 0; top: 0; z-index: 6; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 32px">
+      <a href="#top" aria-label="CourtSync home" style="display: flex; align-items: center; gap: 10px">
+        <span style="width: 34px; height: 34px; border-radius: 10px; background: #0E1428; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M5.5 6.5c3 2.5 3 8.5 0 11M18.5 6.5c-3 2.5-3 8.5 0 11"></path></svg></span>
+        <span class="cd" style="font-size: 24px">CourtSync</span>
+      </a>
+      <nav class="navl gl" aria-label="Main" style="display: flex; gap: 6px; padding: 5px; border-radius: 12px; font-size: 14px; font-weight: 600">
+        <a href="#how" style="padding: 9px 14px; border-radius: 8px; background: #0E1428; color: #FFFFFF">How it works</a>
+        <a href="#product" style="padding: 9px 14px; border-radius: 8px">Product</a>
+        <a href="#players" style="padding: 9px 14px; border-radius: 8px">Players</a>
+        <a href="#pricing" style="padding: 9px 14px; border-radius: 8px">Pricing</a>
+      </nav>
+      <a href="#demo" data-open="demo" class="btn" style="min-height: 44px; padding: 0 20px; background: #C8FF1F; color: #0E1428; font-size: 14px">Book a demo</a>
+    </header>
+
+    <div class="lede gl" style="position: absolute; left: 32px; bottom: 32px; z-index: 6; max-width: 400px; padding: 22px; border-radius: 20px; display: flex; flex-direction: column; gap: 16px">
+      <p style="margin: 0; font-size: 17px; line-height: 1.5; font-weight: 600; color: #0E1428">The operating system for padel clubs. Bookings, payments, live scores and leagues — on every court, at once.</p>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap">
+        <a href="#cta" data-go="trial" class="btn" style="background: #0E1428; color: #FFFFFF">Start free trial
+          <svg class="ar" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </a>
+        <a href="#how" class="btn" style="background: rgba(255,255,255,0.7); color: #0E1428; border: 1px solid rgba(14,20,40,0.12)">How it works</a>
+      </div>
+    </div>
+
+    <a href="#how" class="lede mouse" style="position: absolute; left: 50%; bottom: 28px; margin-left: -18px; z-index: 6; width: 36px; height: 56px; border-radius: 18px; border: 2px solid #0E1428; display: flex; justify-content: center; padding-top: 10px" aria-label="Scroll to explore">
+      <span class="hint" style="width: 4px; height: 10px; border-radius: 2px; background: #0E1428"></span>
+    </a>
+
+    <div class="cap" style="position: absolute; left: 0; right: 0; bottom: 12%; z-index: 4; text-align: center; padding: 0 24px">
+      <p style="margin: 0 auto; max-width: 520px; font-size: 18px; line-height: 1.5; color: #3A4256">Bookings, payments, live scores and leagues — run from one place, for every court in your club.</p>
+    </div>
+  </div>
+</section><main class="sheet">
+
+  <!-- STEPS -->
+  <section id="how" class="wrap" style="padding-top: 120px; padding-bottom: 120px">
+    <div class="rv" style="display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; margin-bottom: 56px">
+      <div>
+        <div class="eyebrow">HOW IT WORKS</div>
+        <h2 class="cd h2" style="margin: 16px 0 0; font-size: 104px">Three steps<br>to full courts</h2>
+      </div>
+      <p style="margin: 0; max-width: 380px; font-size: 18px; line-height: 1.6; color: #4A5368">Set up in an afternoon. Take your first online booking the same day.</p>
+    </div>
+    
+      <div class="steprow rv">
+        <span class="cd snum" style="color: #D9DCD5">01</span>
+        <div style="min-width: 0">
+          <h3 style="margin: 0 0 10px; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15">Set up your courts</h3>
+          <p style="margin: 0; max-width: 520px; font-size: 17px; line-height: 1.6; color: #4A5368">Add courts, opening hours, peak and off-peak prices and your coaches. Import members from a spreadsheet.</p>
+        </div>
+        <div class="art" aria-hidden="true">
+          
+            <svg width="160" height="80" viewBox="0 0 160 80" fill="none"><rect class="drawl" x="4" y="4" width="152" height="72" rx="2" stroke="#2348E0" stroke-width="3"></rect><path class="drawl" d="M80 0v80M28 4v72M132 4v72M28 40h104" stroke="#2348E0" stroke-width="2"></path></svg>
+          
+          
+          
+        </div>
+      </div>
+    
+      <div class="steprow rv">
+        <span class="cd snum" style="color: #D9DCD5">02</span>
+        <div style="min-width: 0">
+          <h3 style="margin: 0 0 10px; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15">Players book &amp; pay</h3>
+          <p style="margin: 0; max-width: 520px; font-size: 17px; line-height: 1.6; color: #4A5368">They pick a slot, invite three friends and everyone pays their share. Open spots go to matchmaking.</p>
+        </div>
+        <div class="art" aria-hidden="true">
+          
+          
+            <span style="display: flex; gap: 10px">
+              <span style="width: 30px; height: 30px; border-radius: 50%; background: #0E1428; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="3.5"><path d="M20 6 9 17l-5-5"></path></svg></span>
+              <span style="width: 30px; height: 30px; border-radius: 50%; background: #0E1428; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="3.5"><path d="M20 6 9 17l-5-5"></path></svg></span>
+              <span style="width: 30px; height: 30px; border-radius: 50%; background: #0E1428; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="3.5"><path d="M20 6 9 17l-5-5"></path></svg></span>
+              <span style="width: 30px; height: 30px; border-radius: 50%; border: 2px dashed #9AA2B4"></span>
+            </span>
+          
+          
+        </div>
+      </div>
+    
+      <div class="steprow rv">
+        <span class="cd snum" style="color: #2348E0">03</span>
+        <div style="min-width: 0">
+          <h3 style="margin: 0 0 10px; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15">Play, score, rank</h3>
+          <p style="margin: 0; max-width: 520px; font-size: 17px; line-height: 1.6; color: #4A5368">Scores go in from the court; ladders and leaderboards update before players reach the bar.</p>
+        </div>
+        <div class="art" aria-hidden="true">
+          
+          
+          
+            <span style="display: flex; align-items: center; gap: 12px">
+              <span class="cd" style="font-size: 44px">6–4</span>
+              <span style="font-size: 12px; font-weight: 800; padding: 7px 11px; border-radius: 999px; background: #C8FF1F">▲ #3</span>
+            </span>
+          
+        </div>
+      </div>
+    
+  </section>
+
+  <!-- PRODUCT -->
+  <section id="product" style="background: #F2F3EF; padding: 120px 0 130px">
+    <div class="wrap">
+      <div class="rv" style="text-align: center; max-width: 820px; margin: 0 auto 64px">
+        <div class="eyebrow">FOR THE FRONT DESK</div>
+        <h2 class="cd h2" style="margin: 16px 0 18px; font-size: 104px">One screen<br>for the whole club</h2>
+        <p style="margin: 0 auto; max-width: 520px; font-size: 18px; line-height: 1.6; color: #4A5368">Every court, every hour, every booking — on one timeline your desk can read at a glance.</p>
+      </div>
+
+      <div class="rvs" id="tl" style="border-radius: 22px; background: #FFFFFF; border: 1px solid #E1E4DE; box-shadow: 0 60px 100px -50px rgba(14,20,40,0.45); overflow: hidden">
+        <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 18px; border-bottom: 1px solid #ECEEE9; flex-wrap: wrap">
+          <span class="hide-sm" style="display: flex; gap: 8px"><span style="width: 11px; height: 11px; border-radius: 50%; background: #E1E4DE"></span><span style="width: 11px; height: 11px; border-radius: 50%; background: #E1E4DE"></span><span style="width: 11px; height: 11px; border-radius: 50%; background: #E1E4DE"></span></span>
+          <div id="tl-tabs" role="tablist" aria-label="Day" style="display: flex; gap: 4px; padding: 4px; border-radius: 10px; background: #F2F3EF">
+            
+              <button type="button" role="tab" data-day="today" aria-selected="true" style="min-height: 36px; padding: 0 14px; border-radius: 8px; border: 0; cursor: pointer; font-family: Archivo, sans-serif; font-size: 13px; font-weight: 800; background: #FFFFFF; color: #0E1428; box-shadow: 0 1px 3px rgba(14,20,40,0.15)">Today</button>
+            
+              <button type="button" role="tab" data-day="tomorrow" aria-selected="false" style="min-height: 36px; padding: 0 14px; border-radius: 8px; border: 0; cursor: pointer; font-family: Archivo, sans-serif; font-size: 13px; font-weight: 800; background: transparent; color: #5B6478; box-shadow: none">Tomorrow</button>
+            
+              <button type="button" role="tab" data-day="saturday" aria-selected="false" style="min-height: 36px; padding: 0 14px; border-radius: 8px; border: 0; cursor: pointer; font-family: Archivo, sans-serif; font-size: 13px; font-weight: 800; background: transparent; color: #5B6478; box-shadow: none">Saturday</button>
+            
+          </div>
+          <span id="tl-live" style="margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; padding: 6px 10px; border-radius: 999px; background: #0E1428; color: #C8FF1F"><span id="tl-live-dot" class="dot" style="width: 6px; height: 6px; border-radius: 50%; background: #C8FF1F; display: inline-block"></span><span id="tl-live-label">2 LIVE</span></span>
+        </div>
+        <div style="padding: 24px; overflow-x: auto">
+          <div class="gantt" id="tl-grid" style="min-width: 860px">
+            <span></span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">07</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">08</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">09</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">10</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">11</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">12</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">13</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">14</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">15</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">16</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">17</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">18</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">19</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">20</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">21</span>
+            
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">22</span>
+            
+            
+              <span class="tl-x" style="grid-row: 2; grid-column: 1; font-size: 13px; font-weight: 800; align-self: center">Court 1</span>
+              
+                <button type="button" class="tl-x bar" data-key="today-0-0" aria-pressed="false" aria-label="Court 1, 07:00 to 09:00, Booked" style="grid-row: 2; grid-column: 2 / span 2; height: 40px; border-radius: 8px; background: #2348E0; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Doubles</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-0-1" aria-pressed="false" aria-label="Court 1, 10:00 to 11:00, Coaching" style="grid-row: 2; grid-column: 5 / span 1; height: 40px; border-radius: 8px; background: #0E1428; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Coaching</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-0-2" aria-pressed="false" aria-label="Court 1, 16:00 to 18:00, Booked" style="grid-row: 2; grid-column: 11 / span 2; height: 40px; border-radius: 8px; background: #2348E0; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Doubles</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-0-3" aria-pressed="false" aria-label="Court 1, 18:00 to 20:00, Open" style="grid-row: 2; grid-column: 13 / span 2; height: 40px; border-radius: 8px; background: #FFFFFF; color: #5B6478; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 1.5px dashed #C9CDC5; box-shadow: none; cursor: pointer; text-align: left">Open</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-0-4" aria-pressed="false" aria-label="Court 1, 20:00 to 22:00, Booked" style="grid-row: 2; grid-column: 15 / span 2; height: 40px; border-radius: 8px; background: #2348E0; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">League</button>
+              
+            
+              <span class="tl-x" style="grid-row: 3; grid-column: 1; font-size: 13px; font-weight: 800; align-self: center">Court 2</span>
+              
+                <button type="button" class="tl-x bar" data-key="today-1-0" aria-pressed="false" aria-label="Court 2, 08:00 to 10:00, Booked" style="grid-row: 3; grid-column: 3 / span 2; height: 40px; border-radius: 8px; background: #2348E0; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Doubles</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-1-1" aria-pressed="false" aria-label="Court 2, 12:00 to 14:00, Open" style="grid-row: 3; grid-column: 7 / span 2; height: 40px; border-radius: 8px; background: #FFFFFF; color: #5B6478; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 1.5px dashed #C9CDC5; box-shadow: none; cursor: pointer; text-align: left">Open</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-1-2" aria-pressed="true" aria-label="Court 2, 17:00 to 19:00, Live now" style="grid-row: 3; grid-column: 12 / span 2; height: 40px; border-radius: 8px; background: #C8FF1F; color: #0E1428; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: 0 0 0 3px #0E1428; cursor: pointer; text-align: left">Live 6–4</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-1-3" aria-pressed="false" aria-label="Court 2, 19:00 to 21:00, Booked" style="grid-row: 3; grid-column: 14 / span 2; height: 40px; border-radius: 8px; background: #2348E0; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Doubles</button>
+              
+            
+              <span class="tl-x" style="grid-row: 4; grid-column: 1; font-size: 13px; font-weight: 800; align-self: center">Court 3</span>
+              
+                <button type="button" class="tl-x bar" data-key="today-2-0" aria-pressed="false" aria-label="Court 3, 09:00 to 11:00, Coaching" style="grid-row: 4; grid-column: 4 / span 2; height: 40px; border-radius: 8px; background: #0E1428; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Clinic</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-2-1" aria-pressed="false" aria-label="Court 3, 13:00 to 14:00, Open" style="grid-row: 4; grid-column: 8 / span 1; height: 40px; border-radius: 8px; background: #FFFFFF; color: #5B6478; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 1.5px dashed #C9CDC5; box-shadow: none; cursor: pointer; text-align: left">Open</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-2-2" aria-pressed="false" aria-label="Court 3, 16:00 to 19:00, Booked" style="grid-row: 4; grid-column: 11 / span 3; height: 40px; border-radius: 8px; background: #2348E0; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Americano</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-2-3" aria-pressed="false" aria-label="Court 3, 20:00 to 22:00, Open" style="grid-row: 4; grid-column: 15 / span 2; height: 40px; border-radius: 8px; background: #FFFFFF; color: #5B6478; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 1.5px dashed #C9CDC5; box-shadow: none; cursor: pointer; text-align: left">Open</button>
+              
+            
+              <span class="tl-x" style="grid-row: 5; grid-column: 1; font-size: 13px; font-weight: 800; align-self: center">Court 4</span>
+              
+                <button type="button" class="tl-x bar" data-key="today-3-0" aria-pressed="false" aria-label="Court 4, 07:00 to 08:00, Coaching" style="grid-row: 5; grid-column: 2 / span 1; height: 40px; border-radius: 8px; background: #0E1428; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Coaching</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-3-1" aria-pressed="false" aria-label="Court 4, 11:00 to 13:00, Booked" style="grid-row: 5; grid-column: 6 / span 2; height: 40px; border-radius: 8px; background: #2348E0; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Doubles</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-3-2" aria-pressed="false" aria-label="Court 4, 17:00 to 19:00, Live now" style="grid-row: 5; grid-column: 12 / span 2; height: 40px; border-radius: 8px; background: #C8FF1F; color: #0E1428; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Live 30–30</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-3-3" aria-pressed="false" aria-label="Court 4, 19:00 to 22:00, Booked" style="grid-row: 5; grid-column: 14 / span 3; height: 40px; border-radius: 8px; background: #2348E0; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">League</button>
+              
+            
+              <span class="tl-x" style="grid-row: 6; grid-column: 1; font-size: 13px; font-weight: 800; align-self: center">Court 5</span>
+              
+                <button type="button" class="tl-x bar" data-key="today-4-0" aria-pressed="false" aria-label="Court 5, 10:00 to 12:00, Open" style="grid-row: 6; grid-column: 5 / span 2; height: 40px; border-radius: 8px; background: #FFFFFF; color: #5B6478; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 1.5px dashed #C9CDC5; box-shadow: none; cursor: pointer; text-align: left">Open</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-4-1" aria-pressed="false" aria-label="Court 5, 15:00 to 17:00, Booked" style="grid-row: 6; grid-column: 10 / span 2; height: 40px; border-radius: 8px; background: #2348E0; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Doubles</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-4-2" aria-pressed="false" aria-label="Court 5, 17:00 to 19:00, Coaching" style="grid-row: 6; grid-column: 12 / span 2; height: 40px; border-radius: 8px; background: #0E1428; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Coaching</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-4-3" aria-pressed="false" aria-label="Court 5, 21:00 to 23:00, Open" style="grid-row: 6; grid-column: 16 / span 2; height: 40px; border-radius: 8px; background: #FFFFFF; color: #5B6478; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 1.5px dashed #C9CDC5; box-shadow: none; cursor: pointer; text-align: left">Open</button>
+              
+            
+              <span class="tl-x" style="grid-row: 7; grid-column: 1; font-size: 13px; font-weight: 800; align-self: center">Court 6</span>
+              
+                <button type="button" class="tl-x bar" data-key="today-5-0" aria-pressed="false" aria-label="Court 6, 08:00 to 10:00, Booked" style="grid-row: 7; grid-column: 3 / span 2; height: 40px; border-radius: 8px; background: #2348E0; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Doubles</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-5-1" aria-pressed="false" aria-label="Court 6, 14:00 to 16:00, Booked" style="grid-row: 7; grid-column: 9 / span 2; height: 40px; border-radius: 8px; background: #2348E0; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Doubles</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-5-2" aria-pressed="false" aria-label="Court 6, 18:00 to 20:00, Open" style="grid-row: 7; grid-column: 13 / span 2; height: 40px; border-radius: 8px; background: #FFFFFF; color: #5B6478; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 1.5px dashed #C9CDC5; box-shadow: none; cursor: pointer; text-align: left">Open</button>
+              
+                <button type="button" class="tl-x bar" data-key="today-5-3" aria-pressed="false" aria-label="Court 6, 20:00 to 22:00, Booked" style="grid-row: 7; grid-column: 15 / span 2; height: 40px; border-radius: 8px; background: #2348E0; color: #FFFFFF; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: 0; box-shadow: none; cursor: pointer; text-align: left">Doubles</button>
+              
+            
+          </div>
+        </div>
+        <div id="tl-detail" style="display: flex; align-items: center; gap: 16px; padding: 16px 24px; border-top: 1px solid #ECEEE9; flex-wrap: wrap; min-height: 80px; background: #FAFAF8">
+          <span id="tl-d-tag" style="font-size: 12px; font-weight: 800; padding: 6px 12px; border-radius: 999px; background: #C8FF1F; color: #0E1428; border: 0">Live now</span>
+          <span style="flex: 1; min-width: 220px"><span id="tl-d-title" style="display: block; font-weight: 800; font-size: 16px">Court 2 · 17:00–19:00</span><span id="tl-d-who" style="font-size: 14px; color: #5B6478">Rivera / Okafor v Lindqvist / Mendes · Set 2</span></span>
+          <button type="button" id="tl-d-act" class="btn" style="min-height: 44px; background: #FFFFFF; color: #0E1428; visibility: hidden">Cancel booking</button>
+        </div>
+      </div>
+
+      <div class="feat4" style="margin-top: 56px">
+        
+          <div class="rv" style="display: flex; flex-direction: column; gap: 10px">
+            <span style="width: 40px; height: 4px; border-radius: 4px; background: #C8FF1F"></span>
+            <h3 style="margin: 0; font-size: 20px; font-weight: 800">Split payments</h3>
+            <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4A5368">Courts confirm only when all four players have paid.</p>
+          </div>
+        
+          <div class="rv" style="display: flex; flex-direction: column; gap: 10px">
+            <span style="width: 40px; height: 4px; border-radius: 4px; background: #2348E0"></span>
+            <h3 style="margin: 0; font-size: 20px; font-weight: 800">Smart waitlist</h3>
+            <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4A5368">Cancelled slots go straight to players who asked for them.</p>
+          </div>
+        
+          <div class="rv" style="display: flex; flex-direction: column; gap: 10px">
+            <span style="width: 40px; height: 4px; border-radius: 4px; background: #0E1428"></span>
+            <h3 style="margin: 0; font-size: 20px; font-weight: 800">Peak pricing</h3>
+            <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4A5368">Charge more at 7pm than 2pm, automatically.</p>
+          </div>
+        
+          <div class="rv" style="display: flex; flex-direction: column; gap: 10px">
+            <span style="width: 40px; height: 4px; border-radius: 4px; background: #C8FF1F"></span>
+            <h3 style="margin: 0; font-size: 20px; font-weight: 800">Live scoring</h3>
+            <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4A5368">Scores from the court feed screens, the app and the ladder.</p>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- STATEMENT (word-by-word, pinned) -->
+  <section class="stmt" aria-label="Statement">
+    <div class="stmt-in">
+      <p class="cd" style="margin: 0; max-width: 1180px; text-align: center; font-size: clamp(56px, 8.4vw, 128px); line-height: 0.92">
+        
+          <span class="w" style="animation-range: contain 10% contain 19%; color: #0E1428">Less </span>
+        
+          <span class="w" style="animation-range: contain 17% contain 26%; color: #0E1428">admin </span>
+        
+          <span class="w" style="animation-range: contain 24% contain 33%; color: #0E1428">at </span>
+        
+          <span class="w" style="animation-range: contain 31% contain 40%; color: #0E1428">the </span>
+        
+          <span class="w" style="animation-range: contain 38% contain 47%; color: #0E1428">desk. </span>
+        
+          <span class="w" style="animation-range: contain 45% contain 54%; color: #0E1428">More </span>
+        
+          <span class="w" style="animation-range: contain 52% contain 61%; color: #2348E0">padel </span>
+        
+          <span class="w" style="animation-range: contain 59% contain 68%; color: #0E1428">on </span>
+        
+          <span class="w" style="animation-range: contain 66% contain 75%; color: #0E1428">the </span>
+        
+          <span class="w" style="animation-range: contain 73% contain 82%; color: #2348E0">court. </span>
+        
+      </p>
+    </div>
+  </section>
+
+  <!-- PLAYERS -->
+  <section id="players" style="background: #0E1428; color: #FFFFFF; padding: 130px 0; border-radius: 40px; overflow: hidden">
+    <div class="wrap appg">
+      <div class="rv" style="display: flex; flex-direction: column; gap: 28px">
+        <div class="eyebrow" style="color: #8E97B0">FOR YOUR PLAYERS</div>
+        <h2 class="cd h2" style="margin: 0; font-size: 104px">Your club<br>in every <span style="color: #C8FF1F">pocket</span></h2>
+        <p style="margin: 0; max-width: 460px; font-size: 18px; line-height: 1.6; color: #B7BFD6">A player app with your club's name on it. Booking, paying and finding a fourth take seconds.</p>
+        <div style="display: flex; flex-direction: column">
+          
+            <div style="display: flex; gap: 18px; align-items: baseline; padding: 18px 0; border-top: 1px solid rgba(255,255,255,0.12)">
+              <span class="cd" style="font-size: 28px; color: #C8FF1F; width: 40px">01</span>
+              <span><span style="display: block; font-weight: 800; font-size: 18px">Book &amp; split</span><span style="font-size: 15px; color: #A9B1C7">Everyone pays their share up front</span></span>
+            </div>
+          
+            <div style="display: flex; gap: 18px; align-items: baseline; padding: 18px 0; border-top: 1px solid rgba(255,255,255,0.12)">
+              <span class="cd" style="font-size: 28px; color: #C8FF1F; width: 40px">02</span>
+              <span><span style="display: block; font-weight: 800; font-size: 18px">Find a game</span><span style="font-size: 15px; color: #A9B1C7">Open spots matched to your level</span></span>
+            </div>
+          
+            <div style="display: flex; gap: 18px; align-items: baseline; padding: 18px 0; border-top: 1px solid rgba(255,255,255,0.12)">
+              <span class="cd" style="font-size: 28px; color: #C8FF1F; width: 40px">03</span>
+              <span><span style="display: block; font-weight: 800; font-size: 18px">Live scores</span><span style="font-size: 15px; color: #A9B1C7">Follow any court from the bar</span></span>
+            </div>
+          
+            <div style="display: flex; gap: 18px; align-items: baseline; padding: 18px 0; border-top: 1px solid rgba(255,255,255,0.12)">
+              <span class="cd" style="font-size: 28px; color: #C8FF1F; width: 40px">04</span>
+              <span><span style="display: block; font-weight: 800; font-size: 18px">Your stats</span><span style="font-size: 15px; color: #A9B1C7">Level and form, season by season</span></span>
+            </div>
+          
+        </div>
+      </div>
+      <div style="display: flex; justify-content: center; position: relative; min-height: 680px; align-items: center">
+        <div aria-hidden="true" class="px" style="position: absolute; width: 380px; height: 380px; border-radius: 50%; border: 1px solid rgba(200,255,31,0.4)"></div>
+        <div aria-hidden="true" class="px" style="position: absolute; width: 540px; height: 540px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08)"></div>
+        <div class="rvs" style="position: relative; width: 300px; height: 620px; border-radius: 50px; padding: 10px; background: #2A3142; box-shadow: 0 60px 100px -40px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.25)">
+          <div style="height: 100%; border-radius: 41px; background: #F2F3EF; color: #0E1428; overflow: hidden; padding: 46px 16px 16px; position: relative; display: flex; flex-direction: column; gap: 12px">
+            <div style="position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 92px; height: 26px; border-radius: 14px; background: #000"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center"><span class="cd" style="font-size: 32px">Find a game</span><span style="width: 34px; height: 34px; border-radius: 50%; background: #0E1428"></span></div>
+            <div style="display: flex; gap: 6px">
+              <button type="button" data-chip="" aria-pressed="true" style="min-height: 32px; padding: 0 12px; border-radius: 999px; border: 0; cursor: pointer; background: #0E1428; color: #C8FF1F; font-family: Archivo, sans-serif; font-size: 12px; font-weight: 800">Level 3–4</button>
+              <button type="button" data-chip="" aria-pressed="false" style="min-height: 32px; padding: 0 12px; border-radius: 999px; border: 0; cursor: pointer; background: #FFFFFF; color: #0E1428; font-family: Archivo, sans-serif; font-size: 12px; font-weight: 800">Tonight</button>
+              <button type="button" data-chip="" aria-pressed="false" style="min-height: 32px; padding: 0 12px; border-radius: 999px; border: 0; cursor: pointer; background: #FFFFFF; color: #0E1428; font-family: Archivo, sans-serif; font-size: 12px; font-weight: 800">Indoor</button>
+            </div>
+            <div style="border-radius: 18px; overflow: hidden; background: #FFFFFF">
+              <div style="height: 92px; background: #2348E0; position: relative">
+                <span style="position: absolute; inset: 12px 18px; border: 2px solid rgba(255,255,255,0.9)"></span>
+                <span style="position: absolute; left: 50%; top: 6px; bottom: 6px; width: 3px; margin-left: -1.5px; background: #0E1428"></span>
+              </div>
+              <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 8px">
+                <div style="display: flex; justify-content: space-between; font-size: 13px"><span style="font-weight: 800">Court 4 · Panoramic</span><span class="cd" style="font-size: 22px">19:00</span></div>
+                <div style="display: flex; align-items: center">
+                  <span style="width: 26px; height: 26px; border-radius: 50%; background: #0E1428; border: 2px solid #FFFFFF"></span>
+                  <span style="width: 26px; height: 26px; border-radius: 50%; background: #2348E0; border: 2px solid #FFFFFF; margin-left: -8px"></span>
+                  <span style="width: 26px; height: 26px; border-radius: 50%; background: #9AA2B4; border: 2px solid #FFFFFF; margin-left: -8px"></span>
+                  <span id="app-slot" style="width: 26px; height: 26px; border-radius: 50%; border: 2px dashed #9AA2B4; margin-left: -8px; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 900; color: #0E1428; transition: background .3s ease"></span>
+                  <button type="button" id="app-join" style="margin-left: auto; min-height: 32px; border: 0; cursor: pointer; font-family: Archivo, sans-serif; font-size: 12px; font-weight: 800; background: #C8FF1F; color: #0E1428; padding: 0 12px; border-radius: 999px; transition: background .3s ease">Join · 1 spot</button>
+                </div>
+              </div>
+            </div>
+            <button type="button" data-game="Court 1 at 20:30" aria-pressed="false" style="border-radius: 18px; padding: 14px; background: #FFFFFF; border: 2px solid transparent; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: Archivo, sans-serif; font-size: 13px; color: #0E1428; text-align: left"><span><span style="display: block; font-weight: 800">Court 1 · Indoor</span><span style="font-size: 11px; color: #5B6478">2 spots · Mixed</span></span><span class="cd" style="font-size: 22px">20:30</span></button>
+            <button type="button" data-game="Court 6 at 21:00" aria-pressed="false" style="border-radius: 18px; padding: 14px; background: #FFFFFF; border: 2px solid transparent; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: Archivo, sans-serif; font-size: 13px; color: #0E1428; text-align: left"><span><span style="display: block; font-weight: 800">Court 6 · Outdoor</span><span style="font-size: 11px; color: #5B6478">3 spots · Level 3</span></span><span class="cd" style="font-size: 22px">21:00</span></button>
+            <button type="button" id="app-cta" style="margin-top: auto; min-height: 52px; border: 0; cursor: pointer; border-radius: 14px; background: #0E1428; color: #C8FF1F; display: flex; align-items: center; justify-content: center; font-family: Archivo, sans-serif; font-size: 15px; font-weight: 800">Book &amp; split · 4 players</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="wrap" style="padding-top: 130px; padding-bottom: 120px">
+    <div class="rv" style="text-align: center; margin-bottom: 56px">
+      <div class="eyebrow">PRICING</div>
+      <h2 class="cd h2" style="margin: 16px 0 16px; font-size: 104px">One plan per club</h2>
+      <p style="margin: 0 auto; max-width: 480px; font-size: 18px; line-height: 1.6; color: #4A5368">Every plan starts with a 14-day free trial, no card needed. Players use the app free. Prices in USD.</p>
+    </div>
+    <div class="rv" style="display: flex; justify-content: center; margin: -16px 0 40px">
+      <div id="billing" role="group" aria-label="Billing period" style="display: flex; gap: 4px; padding: 5px; border-radius: 12px; background: #F2F3EF">
+        
+          <button type="button" data-bill="m" aria-pressed="true" style="min-height: 42px; padding: 0 18px; border-radius: 9px; border: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-family: Archivo, sans-serif; font-size: 14px; font-weight: 800; background: #0E1428; color: #FFFFFF; transition: background .25s ease, color .25s ease">Monthly</button>
+        
+          <button type="button" data-bill="y" aria-pressed="false" style="min-height: 42px; padding: 0 18px; border-radius: 9px; border: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-family: Archivo, sans-serif; font-size: 14px; font-weight: 800; background: transparent; color: #0E1428; transition: background .25s ease, color .25s ease">Yearly<span style="font-size: 11px; padding: 3px 8px; border-radius: 999px; background: #C8FF1F; color: #0E1428">2 months free</span></button>
+        
+      </div>
+    </div>
+    <div class="tiers">
+      
+        <article class="rv" style="border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 20px; background: #FFFFFF; color: #0E1428; border: 1px solid #E1E4DE">
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <span class="cd" style="font-size: 44px">Starter</span>
+            
+          </div>
+          <div style="font-size: 14px; color: #5B6478">For clubs with up to 4 courts</div>
+          <div style="padding-bottom: 20px; border-bottom: 1px solid #ECEEE9; min-height: 112px"><span class="cd" data-price="" data-m="$79" data-y="$66" style="display: inline-block; font-size: 68px">$79</span><span data-per="" data-m="per month" data-y="per month · $790 billed yearly" style="display: block; margin-top: 8px; font-size: 14px; color: #5B6478">per month</span></div>
+          <div style="display: flex; flex-direction: column; gap: 12px; flex: 1">
+            
+              <span style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2348E0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg>Online booking &amp; split payments</span>
+            
+              <span style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2348E0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg>Player app with your club’s name</span>
+            
+              <span style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2348E0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg>Waitlist &amp; automatic reminders</span>
+            
+              <span style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2348E0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg>Email support</span>
+            
+          </div>
+          <a href="#cta" data-go="trial" data-open="" data-plan="Starter" class="btn" style="background: #FFFFFF; color: #0E1428; border: 1px solid #0E1428">Start free trial</a>
+        </article>
+      
+        <article class="rv" style="border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 20px; background: #0E1428; color: #FFFFFF; border: 1px solid #0E1428">
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <span class="cd" style="font-size: 44px">Club</span>
+            
+              <span style="font-size: 11px; font-weight: 800; padding: 6px 10px; border-radius: 999px; background: #C8FF1F; color: #0E1428">MOST POPULAR</span>
+            
+          </div>
+          <div style="font-size: 14px; color: #A9B1C7">For clubs with 5–12 courts</div>
+          <div style="padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.14); min-height: 112px"><span class="cd" data-price="" data-m="$179" data-y="$149" style="display: inline-block; font-size: 68px">$179</span><span data-per="" data-m="per month" data-y="per month · $1,790 billed yearly" style="display: block; margin-top: 8px; font-size: 14px; color: #A9B1C7">per month</span></div>
+          <div style="display: flex; flex-direction: column; gap: 12px; flex: 1">
+            
+              <span style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg>Everything in Starter</span>
+            
+              <span style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg>Live scoring &amp; club screens</span>
+            
+              <span style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg>Leagues, ladders &amp; Americanos</span>
+            
+              <span style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg>Coach calendars &amp; payouts</span>
+            
+          </div>
+          <a href="#cta" data-go="trial" data-open="" data-plan="Club" class="btn" style="background: #C8FF1F; color: #0E1428; border: 1px solid #C8FF1F">Start free trial</a>
+        </article>
+      
+        <article class="rv" style="border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 20px; background: #FFFFFF; color: #0E1428; border: 1px solid #E1E4DE">
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <span class="cd" style="font-size: 44px">Multi-site</span>
+            
+          </div>
+          <div style="font-size: 14px; color: #5B6478">For groups running 3+ clubs</div>
+          <div style="padding-bottom: 20px; border-bottom: 1px solid #ECEEE9; min-height: 112px"><span class="cd" data-price="" data-m="Custom" data-y="Custom" style="display: inline-block; font-size: 68px">Custom</span><span data-per="" data-m="priced per club" data-y="priced per club" style="display: block; margin-top: 8px; font-size: 14px; color: #5B6478">priced per club</span></div>
+          <div style="display: flex; flex-direction: column; gap: 12px; flex: 1">
+            
+              <span style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2348E0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg>Everything in Club</span>
+            
+              <span style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2348E0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg>Memberships across all your clubs</span>
+            
+              <span style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2348E0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg>Group-wide reporting</span>
+            
+              <span style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2348E0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg>Dedicated onboarding</span>
+            
+          </div>
+          <a href="#demo" data-go="" data-open="demo" data-plan="Multi-site" class="btn" style="background: #FFFFFF; color: #0E1428; border: 1px solid #0E1428">Talk to sales</a>
+        </article>
+      
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="background: #F2F3EF; padding: 120px 0">
+    <div class="wrap" style="max-width: 960px">
+      <h2 class="cd h2 rv" style="margin: 0 0 40px; font-size: 104px">Questions</h2>
+      <div style="display: flex; flex-direction: column; border-top: 1px solid #DADDD6">
+        
+          <div style="border-bottom: 1px solid #DADDD6">
+            <button type="button" aria-expanded="true" style="width: 100%; min-height: 76px; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 0; border: 0; background: transparent; cursor: pointer; text-align: left; font-family: Archivo, sans-serif; font-size: 20px; font-weight: 800; color: #0E1428">
+              How long does it take to go live?
+              <span style="width: 38px; height: 38px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; background: #C8FF1F; transform: rotate(45deg); transition: transform .3s ease, background .3s ease"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1428" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+            </button>
+            
+              <p style="margin: 0; padding: 0 60px 26px 0; font-size: 17px; line-height: 1.6; color: #4A5368; max-width: 720px">You can add your courts, prices and opening hours in an afternoon and take your first online booking the same day.</p>
+            
+          </div>
+        
+          <div style="border-bottom: 1px solid #DADDD6">
+            <button type="button" aria-expanded="false" style="width: 100%; min-height: 76px; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 0; border: 0; background: transparent; cursor: pointer; text-align: left; font-family: Archivo, sans-serif; font-size: 20px; font-weight: 800; color: #0E1428">
+              Is there a free trial?
+              <span style="width: 38px; height: 38px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; background: #FFFFFF; transform: rotate(0deg); transition: transform .3s ease, background .3s ease"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1428" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+            </button>
+            
+              <p style="margin: 0; padding: 0 60px 26px 0; font-size: 17px; line-height: 1.6; color: #4A5368; max-width: 720px">Yes. Every plan starts with 14 days free and no card needed. You only pay if you decide to keep going.</p>
+            
+          </div>
+        
+          <div style="border-bottom: 1px solid #DADDD6">
+            <button type="button" aria-expanded="false" style="width: 100%; min-height: 76px; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 0; border: 0; background: transparent; cursor: pointer; text-align: left; font-family: Archivo, sans-serif; font-size: 20px; font-weight: 800; color: #0E1428">
+              Do players pay for the app?
+              <span style="width: 38px; height: 38px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; background: #FFFFFF; transform: rotate(0deg); transition: transform .3s ease, background .3s ease"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1428" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+            </button>
+            
+              <p style="margin: 0; padding: 0 60px 26px 0; font-size: 17px; line-height: 1.6; color: #4A5368; max-width: 720px">No. The player app is free for your members; your club pays one plan price.</p>
+            
+          </div>
+        
+          <div style="border-bottom: 1px solid #DADDD6">
+            <button type="button" aria-expanded="false" style="width: 100%; min-height: 76px; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 0; border: 0; background: transparent; cursor: pointer; text-align: left; font-family: Archivo, sans-serif; font-size: 20px; font-weight: 800; color: #0E1428">
+              Can players split the court fee?
+              <span style="width: 38px; height: 38px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; background: #FFFFFF; transform: rotate(0deg); transition: transform .3s ease, background .3s ease"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1428" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+            </button>
+            
+              <p style="margin: 0; padding: 0 60px 26px 0; font-size: 17px; line-height: 1.6; color: #4A5368; max-width: 720px">Yes. Each player pays their share when they join, and the court confirms once everyone has paid.</p>
+            
+          </div>
+        
+          <div style="border-bottom: 1px solid #DADDD6">
+            <button type="button" aria-expanded="false" style="width: 100%; min-height: 76px; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 0; border: 0; background: transparent; cursor: pointer; text-align: left; font-family: Archivo, sans-serif; font-size: 20px; font-weight: 800; color: #0E1428">
+              Can I bring my existing members across?
+              <span style="width: 38px; height: 38px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; background: #FFFFFF; transform: rotate(0deg); transition: transform .3s ease, background .3s ease"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1428" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+            </button>
+            
+              <p style="margin: 0; padding: 0 60px 26px 0; font-size: 17px; line-height: 1.6; color: #4A5368; max-width: 720px">Yes. Import them from a spreadsheet and they each get an invite to the app.</p>
+            
+          </div>
+        
+          <div style="border-bottom: 1px solid #DADDD6">
+            <button type="button" aria-expanded="false" style="width: 100%; min-height: 76px; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 0; border: 0; background: transparent; cursor: pointer; text-align: left; font-family: Archivo, sans-serif; font-size: 20px; font-weight: 800; color: #0E1428">
+              How does live scoring work?
+              <span style="width: 38px; height: 38px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; background: #FFFFFF; transform: rotate(0deg); transition: transform .3s ease, background .3s ease"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1428" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+            </button>
+            
+              <p style="margin: 0; padding: 0 60px 26px 0; font-size: 17px; line-height: 1.6; color: #4A5368; max-width: 720px">Players tap points on a phone at the court. Scores show in the app and on any screen in your club, and feed straight into rankings.</p>
+            
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" class="wrap" style="padding-top: 140px; padding-bottom: 120px; text-align: center">
+    <h2 class="cd rv" style="margin: 0 auto; font-size: clamp(76px, 12vw, 190px)">Your courts,<br><span style="background: #C8FF1F; padding: 0 16px; box-decoration-break: clone; -webkit-box-decoration-break: clone">in sync.</span></h2>
+    <p class="rv" style="margin: 32px auto 0; max-width: 460px; font-size: 18px; line-height: 1.6; color: #4A5368">Set up your club this afternoon. Your players can book tonight.</p>
+    <div id="trial-box" class="rv" style="max-width: 560px; margin: 32px auto 0">
+      <form id="trial-form" name="trial" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field" novalidate="" style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap">
+        <input type="hidden" name="form-name" value="trial">
+        <input type="hidden" name="plan" id="trial-plan" value="Club">
+        <input type="hidden" name="billing" id="trial-billing" value="Monthly">
+        <p hidden=""><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <label for="cs-email" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Work email</label>
+        <input id="cs-email" name="email" type="email" required="" autocomplete="email" inputmode="email" placeholder="you@yourclub.com" style="flex: 1 1 260px; height: 56px; border-radius: 12px; padding: 0 20px; font-family: Archivo, sans-serif; font-size: 16px; color: #0E1428; background: #F2F3EF; border: 1px solid #DADDD6; outline-color: #2348E0">
+        <button type="submit" class="btn" style="height: 56px; background: #0E1428; color: #FFFFFF">Start free trial <svg class="ar" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+      </form>
+      <p id="trial-msg" aria-live="polite" style="margin: 16px 0 0; min-height: 22px; font-size: 14px; color: #5B6478">14-day free trial on the <b id="trial-plan-label" style="color: #0E1428">Club</b> plan · No card needed</p>
+    </div>
+    <p class="rv" style="margin: 10px 0 0; font-size: 15px; color: #4A5368">Prefer a walkthrough? <a href="#demo" data-open="demo" style="color: #2348E0; font-weight: 800; text-decoration: underline; text-underline-offset: 3px">Book a 20-minute demo</a></p>
+  </section>
+
+  <footer class="wrap" style="padding-top: 32px; padding-bottom: 44px; border-top: 1px solid #E4E7E1; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; font-size: 14px; color: #5B6478">
+    <a href="#top" style="display: flex; align-items: center; gap: 10px">
+      <span style="width: 30px; height: 30px; border-radius: 9px; background: #0E1428; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M5.5 6.5c3 2.5 3 8.5 0 11M18.5 6.5c-3 2.5-3 8.5 0 11"></path></svg></span>
+      <span class="cd" style="font-size: 22px">CourtSync</span>
+    </a>
+    <nav aria-label="Footer" style="display: flex; gap: 24px; flex-wrap: wrap">
+      <a href="#how" style="color: #4A5368">How it works</a>
+      <a href="#product" style="color: #4A5368">Product</a>
+      <a href="#players" style="color: #4A5368">Player app</a>
+      <a href="#pricing" style="color: #4A5368">Pricing</a>
+      <a href="#faq" style="color: #4A5368">FAQ</a>
+      <a href="#demo" data-open="demo" style="color: #4A5368">Book a demo</a>
+    </nav>
+    <span style="display: flex; gap: 20px; align-items: center">© 2026 CourtSync <a href="#top" style="color: #0E1428; font-weight: 800">Back to top ↑</a></span>
+  </footer>
+</main>
+</div>
+
+<dialog id="demo" aria-labelledby="demo-title">
+  <div class="dlg-in">
+    <button type="button" class="dlg-x" data-close aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E1428" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+    <div id="demo-body">
+      <div class="eyebrow">BOOK A DEMO</div>
+      <h2 id="demo-title" class="cd" style="margin:12px 0 10px;font-size:clamp(38px,10vw,52px);padding-right:48px">See CourtSync<br>on your courts</h2>
+      <p style="margin:0 0 22px;font-size:16px;line-height:1.55;color:#4A5368">A 20-minute video call. We’ll set up a sample of your club and walk you through bookings, payments and live scoring.</p>
+      <form id="demo-form" name="demo" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field" novalidate style="display:flex;flex-direction:column;gap:14px">
+        <input type="hidden" name="form-name" value="demo">
+        <input type="hidden" name="plan" id="demo-plan" value="">
+        <p hidden><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <div class="row2">
+          <label class="fld">Your name<input name="name" required autocomplete="name"></label>
+          <label class="fld">Work email<input name="email" type="email" required autocomplete="email" inputmode="email"></label>
+        </div>
+        <div class="row2">
+          <label class="fld">Club name<input name="club" autocomplete="organization"></label>
+          <label class="fld">Number of courts<select name="courts"><option>1–3</option><option selected>4–6</option><option>7–12</option><option>13 or more</option></select></label>
+        </div>
+        <label class="fld">Anything we should know? <span style="font-weight:500;color:#8A92A3">(optional)</span><textarea name="message" rows="3"></textarea></label>
+        <p id="demo-msg" aria-live="polite" style="margin:0;min-height:20px;font-size:14px"></p>
+        <button type="submit" class="btn" style="background:#0E1428;color:#FFFFFF;min-height:54px">Request a demo <svg class="ar" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+      </form>
+    </div>
+  </div>
+</dialog>
+<div id="cs-toast" role="status" aria-live="polite"></div>
+<script>window.CS_DATA = {"timeline":[{"id":"today","label":"Today","rows":[[[0,2,"Doubles","b","Okafor + 3 · all paid"],[3,1,"Coaching","c","Private lesson · Coach Ana"],[9,2,"Doubles","b","Mendes + 3 · all paid"],[11,2,"Open","o",""],[13,2,"League","b","Division 2 · Rivera v Chen"]],[[1,2,"Doubles","b","Adeyemi + 3 · all paid"],[5,2,"Open","o",""],[10,2,"Live 6–4","l","Rivera / Okafor v Lindqvist / Mendes · Set 2"],[12,2,"Doubles","b","Silva + 3 · 3 of 4 paid"]],[[2,2,"Clinic","c","Beginners clinic · 6 players"],[6,1,"Open","o",""],[9,3,"Americano","b","12 players · mixed"],[13,2,"Open","o",""]],[[0,1,"Coaching","c","Private lesson · Coach Luis"],[4,2,"Doubles","b","Bello + 3 · all paid"],[10,2,"Live 30–30","l","League · Adebayo / Chen v Silva / Moreau"],[12,3,"League","b","Division 1 · 2 matches"]],[[3,2,"Open","o",""],[8,2,"Doubles","b","Moreau + 3 · all paid"],[10,2,"Coaching","c","Group session · Coach Ana"],[14,2,"Open","o",""]],[[1,2,"Doubles","b","Chen + 3 · all paid"],[7,2,"Doubles","b","Okeke + 3 · all paid"],[11,2,"Open","o",""],[13,2,"Doubles","b","Lindqvist + 3 · all paid"]]]},{"id":"tomorrow","label":"Tomorrow","rows":[[[1,2,"Doubles","b","Bello + 3 · all paid"],[6,2,"Open","o",""],[10,2,"Doubles","b","Okafor + 3 · 2 of 4 paid"],[13,2,"Open","o",""]],[[0,1,"Coaching","c","Private lesson · Coach Luis"],[3,2,"Open","o",""],[9,2,"League","b","Division 2 · Mendes v Bello"],[12,2,"Open","o",""]],[[2,2,"Doubles","b","Silva + 3 · all paid"],[7,3,"Open","o",""],[11,2,"Clinic","c","Intermediate clinic · 8 players"]],[[4,2,"Open","o",""],[10,2,"Doubles","b","Chen + 3 · all paid"],[13,2,"Doubles","b","Adeyemi + 3 · 3 of 4 paid"]],[[1,2,"Open","o",""],[8,2,"Coaching","c","Group session · Coach Ana"],[12,3,"Open","o",""]],[[0,2,"Doubles","b","Okeke + 3 · all paid"],[5,2,"Open","o",""],[11,2,"Doubles","b","Moreau + 3 · all paid"]]]},{"id":"saturday","label":"Saturday","rows":[[[1,4,"Tournament","b","Club Open · Round 1"],[6,2,"Doubles","b","Rivera + 3 · all paid"],[9,2,"Open","o",""],[12,3,"Americano","b","16 players · social night"]],[[1,4,"Tournament","b","Club Open · Round 1"],[6,2,"Doubles","b","Lindqvist + 3 · all paid"],[10,2,"Doubles","b","Bello + 3 · all paid"],[12,3,"Americano","b","16 players · social night"]],[[0,2,"Clinic","c","Juniors clinic · 8 players"],[3,2,"Doubles","b","Okeke + 3 · all paid"],[7,2,"Open","o",""],[11,2,"Doubles","b","Silva + 3 · all paid"]],[[1,4,"Tournament","b","Club Open · Round 1"],[6,3,"Final","b","Club Open · Final"],[11,2,"Open","o",""]],[[2,2,"Doubles","b","Chen + 3 · all paid"],[5,2,"Coaching","c","Group session · Coach Luis"],[9,2,"Doubles","b","Adeyemi + 3 · all paid"],[13,2,"Open","o",""]],[[0,2,"Doubles","b","Mendes + 3 · all paid"],[4,2,"Open","o",""],[8,2,"Doubles","b","Okafor + 3 · all paid"],[12,2,"Doubles","b","Moreau + 3 · all paid"]]]}]};</script>
+<script>
+/* CourtSync — site behaviour (vanilla JS, no dependencies) */
+(function () {
+  'use strict';
+  var D = window.CS_DATA || {};
+  var LIME = '#C8FF1F', INK = '#0E1428', BLUE = '#2348E0', RED = '#B42318';
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function el(tag, css, text) { var n = document.createElement(tag); if (css) n.style.cssText = css; if (text != null) n.textContent = text; return n; }
+
+  /* ---------- toast ---------- */
+  var toast = $('#cs-toast'), toastT;
+  function say(msg) {
+    if (!toast) return;
+    toast.textContent = msg; toast.classList.add('on');
+    clearTimeout(toastT); toastT = setTimeout(function () { toast.classList.remove('on'); }, 3000);
+  }
+
+  /* ---------- sticky nav after the hero ---------- */
+  var snav = $('#snav'), sheet = $('.sheet');
+  function onScroll() {
+    if (!snav || !sheet) return;
+    var show = sheet.getBoundingClientRect().top < 90;
+    snav.classList.toggle('on', show);
+    snav.setAttribute('aria-hidden', show ? 'false' : 'true');
+    $$('a,button', snav).forEach(function (a) { a.tabIndex = show ? 0 : -1; });
+  }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  /* ---------- plan + billing state ---------- */
+  var billing = 'Monthly';
+  function setPlan(p) {
+    if (!p) return;
+    var a = $('#trial-plan'), b = $('#trial-plan-label');
+    if (a) a.value = p; if (b) b.textContent = p;
+  }
+
+  /* ---------- "start trial" and "book demo" triggers ---------- */
+  function goTrial(p) {
+    setPlan(p);
+    var box = $('#trial-box') || $('#cta');
+    if (box) box.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    var email = $('#cs-email');
+    if (email) setTimeout(function () { email.focus({ preventScroll: true }); }, reduce ? 0 : 650);
+    if (p) say(p + ' plan selected — enter your email to start');
+  }
+  var dlg = $('#demo');
+  function openDemo(p) {
+    if (!dlg) return;
+    var hp = $('#demo-plan'); if (hp) hp.value = p || '';
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+    document.documentElement.style.overflow = 'hidden';
+    setTimeout(function () { var f = $('#demo input[name=name]'); if (f) f.focus(); }, 40);
+  }
+  function closeDemo() { if (!dlg) return; if (dlg.close) dlg.close(); else dlg.removeAttribute('open'); }
+  if (dlg) {
+    dlg.addEventListener('close', function () { document.documentElement.style.overflow = ''; });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) closeDemo(); });
+    $$('[data-close]', dlg).forEach(function (b) { b.addEventListener('click', closeDemo); });
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('[data-open],[data-go]');
+    if (!a) return;
+    if (a.getAttribute('data-open') === 'demo') { e.preventDefault(); openDemo(a.getAttribute('data-plan')); }
+    else if (a.getAttribute('data-go') === 'trial') { e.preventDefault(); goTrial(a.getAttribute('data-plan')); }
+  });
+
+  /* ---------- billing toggle ---------- */
+  function setBill(k) {
+    billing = k === 'y' ? 'Yearly' : 'Monthly';
+    var hb = $('#trial-billing'); if (hb) hb.value = billing;
+    $$('[data-bill]').forEach(function (b) {
+      var on = b.getAttribute('data-bill') === k;
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.style.background = on ? INK : 'transparent'; b.style.color = on ? '#FFFFFF' : INK;
+    });
+    $$('[data-price]').forEach(function (p) {
+      var v = p.getAttribute('data-' + k);
+      if (p.textContent === v) return;
+      p.textContent = v;
+      if (!reduce && p.animate) p.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 280, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    });
+    $$('[data-per]').forEach(function (p) { p.textContent = p.getAttribute('data-' + k); });
+  }
+  $$('[data-bill]').forEach(function (b) { b.addEventListener('click', function () { setBill(b.getAttribute('data-bill')); }); });
+
+  /* ---------- FAQ accordion ---------- */
+  var qs = $$('#faq button[aria-expanded]'), openQ = 0;
+  function setQ(i) {
+    qs.forEach(function (b, j) {
+      var on = j === i, p = b.nextElementSibling, ic = b.querySelector('span');
+      b.setAttribute('aria-expanded', on ? 'true' : 'false');
+      if (p) p.hidden = !on;
+      if (ic) { ic.style.background = on ? LIME : '#FFFFFF'; ic.style.transform = 'rotate(' + (on ? 45 : 0) + 'deg)'; }
+    });
+  }
+  qs.forEach(function (b, i) { b.addEventListener('click', function () { openQ = openQ === i ? -1 : i; setQ(openQ); }); });
+  setQ(openQ);
+
+  /* ---------- club timeline ---------- */
+  var T = D.timeline || [], grid = $('#tl-grid');
+  var KIND = {
+    b: { bg: BLUE, fg: '#FFFFFF', bd: '0', tag: 'Booked', tbg: BLUE, tfg: '#FFFFFF', tbd: '0' },
+    l: { bg: LIME, fg: INK, bd: '0', tag: 'Live now', tbg: LIME, tfg: INK, tbd: '0' },
+    c: { bg: INK, fg: '#FFFFFF', bd: '0', tag: 'Coaching', tbg: INK, tfg: '#FFFFFF', tbd: '0' },
+    o: { bg: '#FFFFFF', fg: '#5B6478', bd: '1.5px dashed #C9CDC5', tag: 'Open', tbg: '#FFFFFF', tfg: INK, tbd: '1.5px dashed #9AA2B4' },
+    m: { bg: BLUE, fg: '#FFFFFF', bd: '2px solid ' + LIME, tag: 'Booked by you', tbg: LIME, tfg: INK, tbd: '0' }
+  };
+  var day = T[0] && T[0].id, sel = null, mine = {};
+  function hh(i) { var h = 7 + i; return (h < 10 ? '0' : '') + h + ':00'; }
+  function dayData() { return T.filter(function (d) { return d.id === day; })[0]; }
+  function firstKey(d) {
+    var k = null;
+    ['l', 'o'].forEach(function (want) {
+      d.rows.forEach(function (r, c) { r.forEach(function (b, i) { if (!k && b[3] === want) k = d.id + '-' + c + '-' + i; }); });
+    });
+    return k;
+  }
+  function renderTL(focusKey) {
+    if (!grid || !T.length) return;
+    var d = dayData(); if (!sel) sel = firstKey(d);
+    $$('.tl-x', grid).forEach(function (n) { n.remove(); });
+    var live = 0;
+    d.rows.forEach(function (row, c) {
+      var nm = el('span', 'grid-row:' + (c + 2) + ';grid-column:1;font-size:13px;font-weight:800;align-self:center', 'Court ' + (c + 1));
+      nm.className = 'tl-x'; grid.appendChild(nm);
+      row.forEach(function (b, i) {
+        var key = day + '-' + c + '-' + i, k = mine[key] ? 'm' : b[3], st = KIND[k], on = key === sel;
+        if (k === 'l') live++;
+        var bt = el('button', 'grid-row:' + (c + 2) + ';grid-column:' + (b[0] + 2) + ' / span ' + b[1] +
+          ';height:40px;border-radius:8px;background:' + st.bg + ';color:' + st.fg + ';border:' + st.bd +
+          ';font-family:Archivo,sans-serif;font-size:11px;font-weight:700;display:flex;align-items:center;padding:0 10px;white-space:nowrap;overflow:hidden;cursor:pointer;text-align:left;box-shadow:' +
+          (on ? '0 0 0 3px ' + INK : 'none'), k === 'm' ? 'Yours' : b[2]);
+        bt.type = 'button'; bt.className = 'tl-x blk';
+        bt.setAttribute('data-key', key); bt.setAttribute('aria-pressed', on ? 'true' : 'false');
+        bt.setAttribute('aria-label', 'Court ' + (c + 1) + ', ' + hh(b[0]) + ' to ' + hh(b[0] + b[1]) + ', ' + st.tag);
+        bt.addEventListener('click', function () { sel = key; renderTL(key); });
+        grid.appendChild(bt);
+        if (focusKey === key) bt.focus({ preventScroll: true });
+      });
+    });
+    // tabs
+    $$('#tl-tabs [data-day]').forEach(function (t) {
+      var on = t.getAttribute('data-day') === day;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.style.background = on ? '#FFFFFF' : 'transparent'; t.style.color = on ? INK : '#5B6478';
+      t.style.boxShadow = on ? '0 1px 3px rgba(14,20,40,0.15)' : 'none';
+    });
+    // live badge
+    var lab = $('#tl-live-label'), dot = $('#tl-live-dot');
+    if (lab) lab.textContent = live ? live + ' LIVE' : 'NO LIVE MATCHES';
+    if (dot) dot.style.display = live ? 'inline-block' : 'none';
+    // detail bar
+    var p = sel.split('-'), c = +p[1], i = +p[2], b = d.rows[c][i], k = mine[sel] ? 'm' : b[3], st = KIND[k];
+    var tag = $('#tl-d-tag'), title = $('#tl-d-title'), who = $('#tl-d-who'), act = $('#tl-d-act');
+    tag.textContent = st.tag; tag.style.background = st.tbg; tag.style.color = st.tfg; tag.style.border = st.tbd;
+    title.textContent = 'Court ' + (c + 1) + ' · ' + hh(b[0]) + '–' + hh(b[0] + b[1]);
+    who.textContent = k === 'm' ? 'Booked by you · invite 3 players to split the fee' : (b[4] || 'Free · up to 4 players');
+    act.style.visibility = (k === 'o' || k === 'm') ? 'visible' : 'hidden';
+    act.textContent = k === 'o' ? 'Book this slot' : 'Cancel booking';
+    act.style.background = k === 'o' ? LIME : '#FFFFFF';
+    act.style.border = k === 'o' ? '0' : '1px solid #C9CDC5';
+  }
+  $$('#tl-tabs [data-day]').forEach(function (t) {
+    t.addEventListener('click', function () { day = t.getAttribute('data-day'); sel = null; renderTL(); });
+  });
+  var actBtn = $('#tl-d-act');
+  if (actBtn) actBtn.addEventListener('click', function () {
+    var d = dayData(), p = sel.split('-'), b = d.rows[+p[1]][+p[2]];
+    if (mine[sel]) { delete mine[sel]; say('Booking cancelled — Court ' + (+p[1] + 1) + ' is open again'); }
+    else if (b[3] === 'o') { mine[sel] = true; say('Booked — Court ' + (+p[1] + 1) + ' at ' + hh(b[0])); }
+    renderTL();
+  });
+  renderTL();
+
+  /* ---------- player app ---------- */
+  $$('[data-chip]').forEach(function (ch) {
+    ch.addEventListener('click', function () {
+      var on = ch.getAttribute('aria-pressed') !== 'true';
+      ch.setAttribute('aria-pressed', on ? 'true' : 'false');
+      ch.style.background = on ? INK : '#FFFFFF'; ch.style.color = on ? LIME : INK;
+    });
+  });
+  var join = $('#app-join'), slot = $('#app-slot'), appCta = $('#app-cta'), joined = false;
+  function setJoined(v) {
+    joined = v;
+    slot.style.border = v ? '2px solid #FFFFFF' : '2px dashed #9AA2B4';
+    slot.style.background = v ? LIME : 'transparent';
+    slot.textContent = v ? 'YOU' : '';
+    join.textContent = v ? 'You’re in ✓' : 'Join · 1 spot';
+    join.style.background = v ? INK : LIME; join.style.color = v ? LIME : INK;
+    appCta.textContent = v ? 'Pay your share · $12' : 'Book & split · 4 players';
+    appCta.style.background = v ? LIME : INK; appCta.style.color = v ? INK : LIME;
+  }
+  if (join) join.addEventListener('click', function () {
+    setJoined(!joined);
+    say(joined ? 'You’re in — Court 4 at 19:00. 4 of 4 players.' : 'You left the game');
+  });
+  if (appCta) appCta.addEventListener('click', function () {
+    say(joined ? 'Paid $12 — see you on Court 4 at 19:00' : 'Pick a game first, then split the fee');
+  });
+  $$('[data-game]').forEach(function (g) {
+    g.addEventListener('click', function () {
+      var on = g.getAttribute('aria-pressed') !== 'true';
+      g.setAttribute('aria-pressed', on ? 'true' : 'false');
+      g.style.borderColor = on ? BLUE : 'transparent';
+      say(on ? 'Saved — we’ll ping you about ' + g.getAttribute('data-game') : 'Removed from saved games');
+    });
+  });
+
+  /* ---------- forms (Netlify Forms) ---------- */
+  var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  function post(form) {
+    return fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString()
+    }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); });
+  }
+  function busy(btn, on, label) {
+    if (on) { btn.dataset.html = btn.innerHTML; btn.disabled = true; btn.style.opacity = '0.7'; btn.textContent = label || 'Sending…'; }
+    else { btn.disabled = false; btn.style.opacity = ''; btn.innerHTML = btn.dataset.html; }
+  }
+  function errMsg(node, text) { node.textContent = ''; node.appendChild(el('span', 'color:' + RED + ';font-weight:700', text)); }
+
+  // trial
+  var tf = $('#trial-form');
+  if (tf) tf.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = $('#cs-email'), msg = $('#trial-msg'), btn = tf.querySelector('[type=submit]'), v = email.value.trim();
+    if (!EMAIL.test(v)) {
+      email.setAttribute('aria-invalid', 'true'); email.style.borderColor = RED;
+      errMsg(msg, 'Please enter a valid email, like you@yourclub.com'); email.focus(); return;
+    }
+    email.removeAttribute('aria-invalid'); email.style.borderColor = '';
+    $('#trial-billing').value = billing;
+    busy(btn, true);
+    post(tf).then(function () {
+      var plan = $('#trial-plan').value;
+      var box = $('#trial-box'); box.textContent = '';
+      var card = el('div', 'display:flex;gap:16px;align-items:center;text-align:left;padding:22px 24px;border-radius:18px;background:#0E1428;color:#FFFFFF');
+      var tick = el('span', 'flex:none;width:44px;height:44px;border-radius:50%;background:' + LIME + ';display:flex;align-items:center;justify-content:center');
+      tick.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E1428" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+      var txt = el('div');
+      txt.appendChild(el('div', 'font-weight:800;font-size:18px', 'You’re on the list'));
+      var line = el('div', 'font-size:15px;color:#B7BFD6;margin-top:4px');
+      line.appendChild(document.createTextNode('We’ll email '));
+      line.appendChild(el('b', 'color:#FFFFFF', v));
+      line.appendChild(document.createTextNode(' to set up your ' + plan + ' trial (' + billing.toLowerCase() + ').'));
+      txt.appendChild(line);
+      card.appendChild(tick); card.appendChild(txt); box.appendChild(card);
+      if (!reduce && card.animate) card.animate([{ opacity: 0, transform: 'scale(.96)' }, { opacity: 1, transform: 'none' }], { duration: 320 });
+      say('Thanks — trial request received');
+    }).catch(function () {
+      busy(btn, false);
+      errMsg(msg, 'Couldn’t send just now — check your connection and try again.');
+    });
+  });
+
+  // demo
+  var df = $('#demo-form');
+  if (df) df.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var msg = $('#demo-msg'), btn = df.querySelector('[type=submit]');
+    var name = df.elements.name, email = df.elements.email, bad = null;
+    [name, email].forEach(function (f) { f.removeAttribute('aria-invalid'); f.style.borderColor = ''; });
+    if (!name.value.trim()) bad = [name, 'Please add your name.'];
+    else if (!EMAIL.test(email.value.trim())) bad = [email, 'Please enter a valid email, like you@yourclub.com'];
+    if (bad) { bad[0].setAttribute('aria-invalid', 'true'); bad[0].style.borderColor = RED; errMsg(msg, bad[1]); bad[0].focus(); return; }
+    msg.textContent = '';
+    busy(btn, true);
+    post(df).then(function () {
+      var body = $('#demo-body'), first = name.value.trim().split(' ')[0];
+      body.textContent = '';
+      var wrap = el('div', 'text-align:center;padding:24px 8px 8px');
+      var tick = el('div', 'width:64px;height:64px;margin:0 auto 20px;border-radius:50%;background:' + LIME + ';display:flex;align-items:center;justify-content:center');
+      tick.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E1428" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+      var h = el('h2', '', 'Thanks, ' + first); h.className = 'cd'; h.style.fontSize = '52px'; h.style.margin = '0';
+      var p = el('p', 'margin:14px auto 24px;max-width:340px;font-size:16px;line-height:1.55;color:#4A5368', 'We’ll reply to ' + email.value.trim() + ' to find a time for your demo.');
+      var done = el('button', '', 'Done'); done.type = 'button'; done.className = 'btn'; done.style.background = INK; done.style.color = '#FFFFFF';
+      done.addEventListener('click', closeDemo);
+      wrap.appendChild(tick); wrap.appendChild(h); wrap.appendChild(p); wrap.appendChild(done); body.appendChild(wrap);
+      done.focus();
+    }).catch(function () {
+      busy(btn, false);
+      errMsg(msg, 'Couldn’t send just now — check your connection and try again.');
+    });
+  });
+})();
+
+</script>
+</body>
+</html>

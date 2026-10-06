@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CourtSync — Padel club software</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F3EF}
+*{box-sizing:border-box}
+a{color:#0E1428;text-decoration:none}a:hover{color:#2348E0}
+.cd{font-family:Archivo,sans-serif;font-stretch:68%;font-weight:900;text-transform:uppercase;line-height:0.84;letter-spacing:-0.01em}
+.wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.btn{min-height:50px;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 24px;border-radius:12px;font-family:Archivo,sans-serif;font-weight:800;font-size:15px;border:0;cursor:pointer;white-space:nowrap;transition:transform .25s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn .ar{transition:transform .25s ease}.btn:hover .ar{transform:translateX(4px)}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:0.16em;color:#5B6478}
+
+/* ===== HERO ===== */
+.scene{position:relative;height:calc(min(100svh,900px) * 6);view-timeline:--cs block}
+.stage{position:sticky;top:0;height:min(100svh,900px);min-height:640px;overflow:hidden;perspective:1100px;perspective-origin:50% 30%;background:radial-gradient(80% 60% at 50% 40%,#FFFFFF 0%,#F2F3EF 60%,#E6E8E2 100%)}
+.lights{position:absolute;left:0;right:0;top:0;height:30%;background:radial-gradient(14% 40% at 22% 0%,rgba(255,255,255,0.9),transparent 70%),radial-gradient(14% 40% at 50% 0%,rgba(255,255,255,0.9),transparent 70%),radial-gradient(14% 40% at 78% 0%,rgba(255,255,255,0.9),transparent 70%);pointer-events:none}
+.court{position:absolute;left:50%;top:50%;width:76vw;height:38vw;margin:-19vw 0 0 -38vw;background:#2348E0;box-shadow:0 0 0 0.7vw rgba(255,255,255,0.9),0 0 0 0.9vw rgba(14,20,40,0.12),0 4vw 8vw -2vw rgba(14,20,40,0.35);transform-origin:50% 50%;transform:translate(0,4vw) scale(1) rotateX(64deg);will-change:transform,opacity}
+.court .ln{position:absolute;background:rgba(255,255,255,0.95)}
+.mesh{position:absolute;left:20%;right:20%;height:0.9vw;background:repeating-linear-gradient(90deg,rgba(14,20,40,0.5) 0 2px,transparent 2px 9px)}
+.post{position:absolute;width:0.9vw;height:0.9vw;background:#0E1428}
+.word{position:absolute;top:0;bottom:0;width:50%;display:flex;align-items:center;justify-content:center;color:#C8FF1F;font-size:15vw;opacity:0}
+.pl{position:absolute;width:3vw;height:3vw;margin:-1.5vw 0 0 -1.5vw}
+.pl .sh{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,0.45);transform:translate(0.7vw,0.9vw);filter:blur(0.3vw)}
+.pl .bd{position:absolute;left:-0.4vw;right:-0.4vw;top:0.6vw;bottom:0.6vw;border-radius:50%}
+.pl .hd{position:absolute;left:0.75vw;top:0.75vw;width:1.5vw;height:1.5vw;border-radius:50%}
+.pl .rk{position:absolute;width:1.4vw;height:1.8vw;border-radius:50% 50% 45% 45%;background:#0E1428;border:0.25vw solid #C8FF1F}
+.ball{position:absolute;width:1vw;height:1vw;margin:-0.5vw 0 0 -0.5vw;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F7FFB8,#C8FF1F 55%,#9CC000);box-shadow:0 0 1.8vw 0.4vw rgba(200,255,31,0.85);animation:ball 3.2s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes ball{0%{left:28%;top:70%}25%{left:73%;top:32%}50%{left:80%;top:66%}75%{left:22%;top:34%}100%{left:28%;top:70%}}
+.a1{animation:p1 3.2s ease-in-out infinite}.a2{animation:p2 3.2s ease-in-out infinite}.b1{animation:p3 3.2s ease-in-out infinite}.b2{animation:p4 3.2s ease-in-out infinite}
+@keyframes p1{0%,100%{transform:translate(0,0)}50%{transform:translate(1.2vw,-2vw)}}
+@keyframes p2{0%,100%{transform:translate(0,0)}25%{transform:translate(1.5vw,0.8vw)}75%{transform:translate(-1vw,-1vw)}}
+@keyframes p3{0%,100%{transform:translate(0,0)}25%{transform:translate(-1vw,1.4vw)}}
+@keyframes p4{0%,100%{transform:translate(0,0)}50%{transform:translate(-1.6vw,-1.2vw)}}
+.glass{position:absolute;inset:0;z-index:3;pointer-events:none;transform-origin:50% 45%}
+.pane{position:absolute;inset:0;background:linear-gradient(180deg,rgba(170,195,230,0.10),rgba(170,195,230,0.03) 60%,rgba(170,195,230,0.10)),linear-gradient(112deg,transparent 14%,rgba(255,255,255,0.55) 17%,rgba(255,255,255,0.12) 21%,transparent 23%),linear-gradient(112deg,transparent 56%,rgba(255,255,255,0.4) 58%,transparent 62%),linear-gradient(112deg,transparent 70%,rgba(255,255,255,0.3) 71%,transparent 72.5%)}
+.mark{position:absolute;left:0;right:0;bottom:calc(50% + 6vw + max(2vw, 16px));z-index:2;text-align:center;color:#0E1428;font-size:min(15vw,22svh,198px);pointer-events:none;transform-origin:50% 100%}
+.cap{opacity:0}
+.gl{background:rgba(255,255,255,0.62);border:1px solid rgba(255,255,255,0.9);box-shadow:0 20px 50px -24px rgba(14,20,40,0.35),inset 0 1px 0 rgba(255,255,255,0.9);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4)}
+.hint{animation:hint 1.8s ease-in-out infinite}
+@keyframes hint{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.dot{animation:dot 1.6s ease-in-out infinite}
+@keyframes dot{0%,100%{box-shadow:0 0 0 0 rgba(200,255,31,0.9)}50%{box-shadow:0 0 0 6px rgba(200,255,31,0)}}
+
+/* ===== PAGE ===== */
+.sheet{position:relative;z-index:10;margin-top:calc(min(100svh,900px) * -1);background:#FFFFFF;border-radius:40px 40px 0 0;box-shadow:0 -30px 60px -30px rgba(14,20,40,0.25)}
+.steprow{display:grid;grid-template-columns:200px minmax(0,1fr) 300px;gap:48px;align-items:center;padding:44px 0;border-top:1px solid #E4E7E1}
+.snum{font-size:120px}
+.art{height:120px;border-radius:16px;background:#F2F3EF;display:flex;align-items:center;justify-content:center}
+.feat4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
+.appg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:stretch}
+.gantt{display:grid;grid-template-columns:90px repeat(16,minmax(0,1fr));row-gap:8px}
+.stmt{position:relative;height:calc(min(100svh,900px) * 2);view-timeline:--st block}
+.stmt-in{position:sticky;top:0;height:min(100svh,900px);display:flex;align-items:center;justify-content:center;padding:0 40px}
+.w{opacity:0.14}
+.rv{} .rvs{}
+
+@supports (animation-timeline: view()){
+@media (prefers-reduced-motion: no-preference){
+.court,.glass,.mark,.word,.cap,.lede,.lights{animation-timing-function:linear;animation-fill-mode:both;animation-timeline:--cs;animation-range:contain 0% contain 100%}
+.court{animation-name:rise}
+@keyframes rise{
+0%,8%{transform:translate(0,4vw) scale(1) rotateX(64deg);opacity:1}
+42%,52%{transform:translate(0,0) scale(1) rotateX(0deg);opacity:1}
+70%,78%{transform:translate(0,-7vw) scale(0.62) rotateX(0deg);opacity:1}
+100%{transform:translate(0,-22vw) scale(0.4) rotateX(0deg);opacity:0}}
+.glass{animation-name:glass}
+@keyframes glass{0%,8%{opacity:1;transform:scale(1)}26%,100%{opacity:0;transform:scale(2.4)}}
+.mark{animation-name:mark}
+@keyframes mark{0%,8%{opacity:1;transform:translateY(0) scale(1)}22%,100%{opacity:0;transform:translateY(-6vw) scale(1.08)}}
+.word{animation-name:word}
+@keyframes word{0%,28%{opacity:0}40%,100%{opacity:1}}
+.cap{animation-name:cap}
+@keyframes cap{0%,60%{opacity:0;transform:translateY(40px)}72%,78%{opacity:1;transform:translateY(0)}90%,100%{opacity:0;transform:translateY(-40px)}}
+.lede{animation-name:lede}
+@keyframes lede{0%,5%{opacity:1;transform:translateY(0)}17%,100%{opacity:0;transform:translateY(20px)}}
+.lights{animation-name:lede}
+
+.rv{animation:rv linear both;animation-timeline:view();animation-range:entry 0% entry 60%}
+@keyframes rv{from{opacity:0;transform:translateY(60px)}}
+.rvs{animation:rvs linear both;animation-timeline:view();animation-range:entry 0% cover 40%}
+@keyframes rvs{from{opacity:0;transform:translateY(120px) scale(0.94)}}
+.px{animation:px linear both;animation-timeline:view();animation-range:cover}
+@keyframes px{from{transform:translateY(70px)}to{transform:translateY(-70px)}}
+.drawl{stroke-dasharray:400;animation:drawl linear both;animation-timeline:view();animation-range:entry 20% cover 50%}
+@keyframes drawl{from{stroke-dashoffset:400}to{stroke-dashoffset:0}}
+.bar{transform-origin:0 50%;animation:bar linear both;animation-timeline:view();animation-range:entry 10% cover 45%}
+@keyframes bar{from{transform:scaleX(0)}}
+.w{animation:w linear both;animation-timeline:--st}
+@keyframes w{to{opacity:1}}
+}}
+@supports not (animation-timeline: view()){.w{opacity:1}}
+@media (prefers-reduced-motion: reduce){.ball,.a1,.a2,.b1,.b2,.hint,.dot{animation:none}.w{opacity:1}}
+@media (max-width:1000px){.navl{display:none !important}.hud{display:none !important}.steprow{grid-template-columns:110px minmax(0,1fr);gap:20px 32px;align-items:start}.snum{font-size:88px}.steprow .art{grid-column:2;height:100px}.feat4{grid-template-columns:repeat(2,minmax(0,1fr))}.appg,.tiers{grid-template-columns:minmax(0,1fr)}.hide-sm{display:none !important}}
+@media (max-width:640px){.wrap{padding:0 18px}.h2{font-size:56px !important}.feat4{grid-template-columns:minmax(0,1fr)}.lede{left:16px !important;right:16px !important;max-width:none !important}.mouse{display:none !important}
+.steprow{grid-template-columns:minmax(0,1fr);gap:14px;padding:36px 0}.snum{font-size:72px}.steprow .art{grid-column:auto;height:96px}}
+</style>
+</helmet>
+
+<div style="font-family: Archivo, sans-serif; color: #0E1428; background: #F2F3EF">
+
+<!-- ======================= HERO ======================= -->
+
+
+<!-- ======================= PAGE SHEET (slides over the hero) ======================= -->
+<section id="top" class="scene" aria-label="CourtSync — through the glass, then above the court">
+  <div class="stage">
+    <div class="lights" aria-hidden="true"></div>
+
+    <div class="court" aria-hidden="true">
+      <span class="ln" style="left: 0; right: 0; top: 0; height: 0.35vw"></span>
+      <span class="ln" style="left: 0; right: 0; bottom: 0; height: 0.35vw"></span>
+      <span class="ln" style="top: 0; bottom: 0; left: 0; width: 0.35vw"></span>
+      <span class="ln" style="top: 0; bottom: 0; right: 0; width: 0.35vw"></span>
+      <span class="ln" style="top: 0; bottom: 0; left: 15.25%; width: 0.3vw"></span>
+      <span class="ln" style="top: 0; bottom: 0; left: 84.75%; width: 0.3vw"></span>
+      <span class="ln" style="left: 15.25%; right: 15.25%; top: 50%; height: 0.3vw; margin-top: -0.15vw"></span>
+      <span class="mesh" style="top: -1.6vw"></span>
+      <span class="mesh" style="bottom: -1.6vw"></span>
+      <span class="post" style="left: -1.6vw; top: -1.6vw"></span>
+      <span class="post" style="right: -1.6vw; top: -1.6vw"></span>
+      <span class="post" style="left: -1.6vw; bottom: -1.6vw"></span>
+      <span class="post" style="right: -1.6vw; bottom: -1.6vw"></span>
+      <span class="post" style="left: 20%; top: -1.6vw"></span>
+      <span class="post" style="left: 80%; top: -1.6vw"></span>
+      <span class="post" style="left: 20%; bottom: -1.6vw"></span>
+      <span class="post" style="left: 80%; bottom: -1.6vw"></span>
+      <span class="word cd" style="left: 0">Court</span>
+      <span class="word cd" style="right: 0">Sync</span>
+      <span style="position: absolute; left: 50%; top: -2.4vw; bottom: -2.4vw; width: 0.55vw; margin-left: -0.27vw; background: #0E1428; box-shadow: 0.5vw 0.3vw 0.6vw rgba(0,0,0,0.45)"></span>
+      <span style="position: absolute; left: 50%; top: -2.8vw; width: 1.4vw; height: 1.4vw; margin-left: -0.7vw; border-radius: 50%; background: #0E1428"></span>
+      <span style="position: absolute; left: 50%; bottom: -2.8vw; width: 1.4vw; height: 1.4vw; margin-left: -0.7vw; border-radius: 50%; background: #0E1428"></span>
+      <span class="pl a1" style="left: 18%; top: 30%"><span class="sh"></span><span class="bd" style="background: #F4F4F0"></span><span class="hd" style="background: #0E1428"></span><span class="rk" style="left: 2.6vw; top: -0.8vw"></span></span>
+      <span class="pl a2" style="left: 30%; top: 72%"><span class="sh"></span><span class="bd" style="background: #F4F4F0"></span><span class="hd" style="background: #FFFFFF; box-shadow: inset 0 0 0 0.25vw #0E1428"></span><span class="rk" style="left: 2.6vw; top: 1.4vw"></span></span>
+      <span class="pl b1" style="left: 70%; top: 28%"><span class="sh"></span><span class="bd" style="background: #0E1428; box-shadow: 0 0 0 0.2vw rgba(255,255,255,0.5)"></span><span class="hd" style="background: #C8FF1F"></span><span class="rk" style="left: -1.6vw; top: -0.6vw"></span></span>
+      <span class="pl b2" style="left: 82%; top: 70%"><span class="sh"></span><span class="bd" style="background: #0E1428; box-shadow: 0 0 0 0.2vw rgba(255,255,255,0.5)"></span><span class="hd" style="background: #F4F4F0"></span><span class="rk" style="left: -1.6vw; top: 1.4vw"></span></span>
+      <span class="ball"></span>
+    </div>
+
+    <div class="mark cd" aria-hidden="true">CourtSync</div>
+
+    <div class="glass" aria-hidden="true">
+      <div class="pane"></div>
+      <div class="hud" style="position: absolute; right: 32px; bottom: 32px; padding: 14px 18px; border-radius: 12px; background: #0E1428; color: #FFFFFF; box-shadow: 0 20px 40px -20px rgba(14,20,40,0.6); min-width: 210px">
+        <div style="display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: #C8FF1F; margin-bottom: 8px"><span class="dot" style="width: 7px; height: 7px; border-radius: 50%; background: #C8FF1F"></span>LIVE · COURT 02</div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 18px"><span style="font-size: 13px; color: #D5DAE6">Set 3 · Game 8</span><span class="cd" style="font-size: 36px">40–15</span></div>
+      </div>
+    </div>
+
+    <header style="position: absolute; left: 0; right: 0; top: 0; z-index: 6; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 32px">
+      <a href="#top" aria-label="CourtSync home" style="display: flex; align-items: center; gap: 10px">
+        <span style="width: 34px; height: 34px; border-radius: 10px; background: #0E1428; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M5.5 6.5c3 2.5 3 8.5 0 11M18.5 6.5c-3 2.5-3 8.5 0 11"></path></svg></span>
+        <span class="cd" style="font-size: 24px">CourtSync</span>
+      </a>
+      <nav class="navl gl" aria-label="Main" style="display: flex; gap: 6px; padding: 5px; border-radius: 12px; font-size: 14px; font-weight: 600">
+        <a href="#how" style="padding: 9px 14px; border-radius: 8px; background: #0E1428; color: #FFFFFF">How it works</a>
+        <a href="#product" style="padding: 9px 14px; border-radius: 8px">Product</a>
+        <a href="#players" style="padding: 9px 14px; border-radius: 8px">Players</a>
+        <a href="#pricing" style="padding: 9px 14px; border-radius: 8px">Pricing</a>
+      </nav>
+      <a href="#demo" data-open="demo" class="btn" style="min-height: 44px; padding: 0 20px; background: #C8FF1F; color: #0E1428; font-size: 14px">Book a demo</a>
+    </header>
+
+    <div class="lede gl" style="position: absolute; left: 32px; bottom: 32px; z-index: 6; max-width: 400px; padding: 22px; border-radius: 20px; display: flex; flex-direction: column; gap: 16px">
+      <p style="margin: 0; font-size: 17px; line-height: 1.5; font-weight: 600; color: #0E1428">The operating system for padel clubs. Bookings, payments, live scores and leagues — on every court, at once.</p>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap">
+        <a href="#cta" data-go="trial" class="btn" style="background: #0E1428; color: #FFFFFF">Start free trial
+          <svg class="ar" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </a>
+        <a href="#how" class="btn" style="background: rgba(255,255,255,0.7); color: #0E1428; border: 1px solid rgba(14,20,40,0.12)">How it works</a>
+      </div>
+    </div>
+
+    <a href="#how" class="lede mouse" style="position: absolute; left: 50%; bottom: 28px; margin-left: -18px; z-index: 6; width: 36px; height: 56px; border-radius: 18px; border: 2px solid #0E1428; display: flex; justify-content: center; padding-top: 10px" aria-label="Scroll to explore">
+      <span class="hint" style="width: 4px; height: 10px; border-radius: 2px; background: #0E1428"></span>
+    </a>
+
+    <div class="cap" style="position: absolute; left: 0; right: 0; bottom: 12%; z-index: 4; text-align: center; padding: 0 24px">
+      <p style="margin: 0 auto; max-width: 520px; font-size: 18px; line-height: 1.5; color: #3A4256">Bookings, payments, live scores and leagues — run from one place, for every court in your club.</p>
+    </div>
+  </div>
+</section><main class="sheet">
+
+  <!-- STEPS -->
+  <section id="how" class="wrap" style="padding-top: 120px; padding-bottom: 120px">
+    <div class="rv" style="display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; margin-bottom: 56px">
+      <div>
+        <div class="eyebrow">HOW IT WORKS</div>
+        <h2 class="cd h2" style="margin: 16px 0 0; font-size: 104px">Three steps<br>to full courts</h2>
+      </div>
+      <p style="margin: 0; max-width: 380px; font-size: 18px; line-height: 1.6; color: #4A5368">Set up in an afternoon. Take your first online booking the same day.</p>
+    </div>
+    <sc-for list="{{steps}}" as="s" hint-placeholder-count="3">
+      <div class="steprow rv">
+        <span class="cd snum" style="color: {{s.nc}}">{{s.n}}</span>
+        <div style="min-width: 0">
+          <h3 style="margin: 0 0 10px; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15">{{s.t}}</h3>
+          <p style="margin: 0; max-width: 520px; font-size: 17px; line-height: 1.6; color: #4A5368">{{s.d}}</p>
+        </div>
+        <div class="art" aria-hidden="true">
+          <sc-if value="{{s.a1}}" hint-placeholder-val="{{false}}">
+            <svg width="160" height="80" viewBox="0 0 160 80" fill="none"><rect class="drawl" x="4" y="4" width="152" height="72" rx="2" stroke="#2348E0" stroke-width="3"></rect><path class="drawl" d="M80 0v80M28 4v72M132 4v72M28 40h104" stroke="#2348E0" stroke-width="2"></path></svg>
+          </sc-if>
+          <sc-if value="{{s.a2}}" hint-placeholder-val="{{false}}">
+            <span style="display: flex; gap: 10px">
+              <span style="width: 30px; height: 30px; border-radius: 50%; background: #0E1428; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="3.5"><path d="M20 6 9 17l-5-5"></path></svg></span>
+              <span style="width: 30px; height: 30px; border-radius: 50%; background: #0E1428; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="3.5"><path d="M20 6 9 17l-5-5"></path></svg></span>
+              <span style="width: 30px; height: 30px; border-radius: 50%; background: #0E1428; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="3.5"><path d="M20 6 9 17l-5-5"></path></svg></span>
+              <span style="width: 30px; height: 30px; border-radius: 50%; border: 2px dashed #9AA2B4"></span>
+            </span>
+          </sc-if>
+          <sc-if value="{{s.a3}}" hint-placeholder-val="{{false}}">
+            <span style="display: flex; align-items: center; gap: 12px">
+              <span class="cd" style="font-size: 44px">6–4</span>
+              <span style="font-size: 12px; font-weight: 800; padding: 7px 11px; border-radius: 999px; background: #C8FF1F">▲ #3</span>
+            </span>
+          </sc-if>
+        </div>
+      </div>
+    </sc-for>
+  </section>
+
+  <!-- PRODUCT -->
+  <section id="product" style="background: #F2F3EF; padding: 120px 0 130px">
+    <div class="wrap">
+      <div class="rv" style="text-align: center; max-width: 820px; margin: 0 auto 64px">
+        <div class="eyebrow">FOR THE FRONT DESK</div>
+        <h2 class="cd h2" style="margin: 16px 0 18px; font-size: 104px">One screen<br>for the whole club</h2>
+        <p style="margin: 0 auto; max-width: 520px; font-size: 18px; line-height: 1.6; color: #4A5368">Every court, every hour, every booking — on one timeline your desk can read at a glance.</p>
+      </div>
+
+      <div class="rvs" id="tl" style="border-radius: 22px; background: #FFFFFF; border: 1px solid #E1E4DE; box-shadow: 0 60px 100px -50px rgba(14,20,40,0.45); overflow: hidden">
+        <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 18px; border-bottom: 1px solid #ECEEE9; flex-wrap: wrap">
+          <span class="hide-sm" style="display: flex; gap: 8px"><span style="width: 11px; height: 11px; border-radius: 50%; background: #E1E4DE"></span><span style="width: 11px; height: 11px; border-radius: 50%; background: #E1E4DE"></span><span style="width: 11px; height: 11px; border-radius: 50%; background: #E1E4DE"></span></span>
+          <div id="tl-tabs" role="tablist" aria-label="Day" style="display: flex; gap: 4px; padding: 4px; border-radius: 10px; background: #F2F3EF">
+            <sc-for list="{{tlTabs}}" as="t" hint-placeholder-count="3">
+              <button type="button" role="tab" data-day="{{t.id}}" aria-selected="{{t.on}}" onClick="{{t.pick}}" style="min-height: 36px; padding: 0 14px; border-radius: 8px; border: 0; cursor: pointer; font-family: Archivo, sans-serif; font-size: 13px; font-weight: 800; background: {{t.bg}}; color: {{t.fg}}; box-shadow: {{t.sh}}">{{t.label}}</button>
+            </sc-for>
+          </div>
+          <span id="tl-live" style="margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; padding: 6px 10px; border-radius: 999px; background: #0E1428; color: #C8FF1F"><span id="tl-live-dot" class="dot" style="width: 6px; height: 6px; border-radius: 50%; background: #C8FF1F; display: {{liveDot}}"></span><span id="tl-live-label">{{liveLabel}}</span></span>
+        </div>
+        <div style="padding: 24px; overflow-x: auto">
+          <div class="gantt" id="tl-grid" style="min-width: 860px">
+            <span></span>
+            <sc-for list="{{hours}}" as="h" hint-placeholder-count="16">
+              <span style="font-size: 11px; font-weight: 600; color: #8A92A3">{{h}}</span>
+            </sc-for>
+            <sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+              <span class="tl-x" style="grid-row: {{r.row}}; grid-column: 1; font-size: 13px; font-weight: 800; align-self: center">{{r.name}}</span>
+              <sc-for list="{{r.blocks}}" as="b" hint-placeholder-count="4">
+                <button type="button" class="tl-x bar" data-key="{{b.key}}" aria-pressed="{{b.on}}" aria-label="{{b.aria}}" onClick="{{b.pick}}" style="grid-row: {{b.row}}; grid-column: {{b.col}}; height: 40px; border-radius: 8px; background: {{b.bg}}; color: {{b.fg}}; font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; border: {{b.bd}}; box-shadow: {{b.ring}}; cursor: pointer; text-align: left">{{b.t}}</button>
+              </sc-for>
+            </sc-for>
+          </div>
+        </div>
+        <div id="tl-detail" style="display: flex; align-items: center; gap: 16px; padding: 16px 24px; border-top: 1px solid #ECEEE9; flex-wrap: wrap; min-height: 80px; background: #FAFAF8">
+          <span id="tl-d-tag" style="font-size: 12px; font-weight: 800; padding: 6px 12px; border-radius: 999px; background: {{det.tagBg}}; color: {{det.tagFg}}; border: {{det.tagBd}}">{{det.tag}}</span>
+          <span style="flex: 1; min-width: 220px"><span id="tl-d-title" style="display: block; font-weight: 800; font-size: 16px">{{det.title}}</span><span id="tl-d-who" style="font-size: 14px; color: #5B6478">{{det.who}}</span></span>
+          <button type="button" id="tl-d-act" class="btn" onClick="{{det.act}}" style="min-height: 44px; background: {{det.abg}}; color: {{det.afg}}; visibility: {{det.vis}}">{{det.alabel}}</button>
+        </div>
+      </div>
+
+      <div class="feat4" style="margin-top: 56px">
+        <sc-for list="{{feats}}" as="f" hint-placeholder-count="4">
+          <div class="rv" style="display: flex; flex-direction: column; gap: 10px">
+            <span style="width: 40px; height: 4px; border-radius: 4px; background: {{f.c}}"></span>
+            <h3 style="margin: 0; font-size: 20px; font-weight: 800">{{f.t}}</h3>
+            <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4A5368">{{f.d}}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATEMENT (word-by-word, pinned) -->
+  <section class="stmt" aria-label="Statement">
+    <div class="stmt-in">
+      <p class="cd" style="margin: 0; max-width: 1180px; text-align: center; font-size: clamp(56px, 8.4vw, 128px); line-height: 0.92">
+        <sc-for list="{{words}}" as="w" hint-placeholder-count="10">
+          <span class="w" style="animation-range: contain {{w.a}}% contain {{w.b}}%; color: {{w.c}}">{{w.t}} </span>
+        </sc-for>
+      </p>
+    </div>
+  </section>
+
+  <!-- PLAYERS -->
+  <section id="players" style="background: #0E1428; color: #FFFFFF; padding: 130px 0; border-radius: 40px; overflow: hidden">
+    <div class="wrap appg">
+      <div class="rv" style="display: flex; flex-direction: column; gap: 28px">
+        <div class="eyebrow" style="color: #8E97B0">FOR YOUR PLAYERS</div>
+        <h2 class="cd h2" style="margin: 0; font-size: 104px">Your club<br>in every <span style="color: #C8FF1F">pocket</span></h2>
+        <p style="margin: 0; max-width: 460px; font-size: 18px; line-height: 1.6; color: #B7BFD6">A player app with your club's name on it. Booking, paying and finding a fourth take seconds.</p>
+        <div style="display: flex; flex-direction: column">
+          <sc-for list="{{appFeats}}" as="f" hint-placeholder-count="4">
+            <div style="display: flex; gap: 18px; align-items: baseline; padding: 18px 0; border-top: 1px solid rgba(255,255,255,0.12)">
+              <span class="cd" style="font-size: 28px; color: #C8FF1F; width: 40px">{{f.n}}</span>
+              <span><span style="display: block; font-weight: 800; font-size: 18px">{{f.t}}</span><span style="font-size: 15px; color: #A9B1C7">{{f.d}}</span></span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: center; position: relative; min-height: 680px; align-items: center">
+        <div aria-hidden="true" class="px" style="position: absolute; width: 380px; height: 380px; border-radius: 50%; border: 1px solid rgba(200,255,31,0.4)"></div>
+        <div aria-hidden="true" class="px" style="position: absolute; width: 540px; height: 540px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08)"></div>
+        <div class="rvs" style="position: relative; width: 300px; height: 620px; border-radius: 50px; padding: 10px; background: #2A3142; box-shadow: 0 60px 100px -40px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.25)">
+          <div style="height: 100%; border-radius: 41px; background: #F2F3EF; color: #0E1428; overflow: hidden; padding: 46px 16px 16px; position: relative; display: flex; flex-direction: column; gap: 12px">
+            <div style="position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 92px; height: 26px; border-radius: 14px; background: #000"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center"><span class="cd" style="font-size: 32px">Find a game</span><span style="width: 34px; height: 34px; border-radius: 50%; background: #0E1428"></span></div>
+            <div style="display: flex; gap: 6px">
+              <button type="button" data-chip="" aria-pressed="true" style="min-height: 32px; padding: 0 12px; border-radius: 999px; border: 0; cursor: pointer; background: #0E1428; color: #C8FF1F; font-family: Archivo, sans-serif; font-size: 12px; font-weight: 800">Level 3–4</button>
+              <button type="button" data-chip="" aria-pressed="false" style="min-height: 32px; padding: 0 12px; border-radius: 999px; border: 0; cursor: pointer; background: #FFFFFF; color: #0E1428; font-family: Archivo, sans-serif; font-size: 12px; font-weight: 800">Tonight</button>
+              <button type="button" data-chip="" aria-pressed="false" style="min-height: 32px; padding: 0 12px; border-radius: 999px; border: 0; cursor: pointer; background: #FFFFFF; color: #0E1428; font-family: Archivo, sans-serif; font-size: 12px; font-weight: 800">Indoor</button>
+            </div>
+            <div style="border-radius: 18px; overflow: hidden; background: #FFFFFF">
+              <div style="height: 92px; background: #2348E0; position: relative">
+                <span style="position: absolute; inset: 12px 18px; border: 2px solid rgba(255,255,255,0.9)"></span>
+                <span style="position: absolute; left: 50%; top: 6px; bottom: 6px; width: 3px; margin-left: -1.5px; background: #0E1428"></span>
+              </div>
+              <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 8px">
+                <div style="display: flex; justify-content: space-between; font-size: 13px"><span style="font-weight: 800">Court 4 · Panoramic</span><span class="cd" style="font-size: 22px">19:00</span></div>
+                <div style="display: flex; align-items: center">
+                  <span style="width: 26px; height: 26px; border-radius: 50%; background: #0E1428; border: 2px solid #FFFFFF"></span>
+                  <span style="width: 26px; height: 26px; border-radius: 50%; background: #2348E0; border: 2px solid #FFFFFF; margin-left: -8px"></span>
+                  <span style="width: 26px; height: 26px; border-radius: 50%; background: #9AA2B4; border: 2px solid #FFFFFF; margin-left: -8px"></span>
+                  <span id="app-slot" style="width: 26px; height: 26px; border-radius: 50%; border: 2px dashed #9AA2B4; margin-left: -8px; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 900; color: #0E1428; transition: background .3s ease"></span>
+                  <button type="button" id="app-join" style="margin-left: auto; min-height: 32px; border: 0; cursor: pointer; font-family: Archivo, sans-serif; font-size: 12px; font-weight: 800; background: #C8FF1F; color: #0E1428; padding: 0 12px; border-radius: 999px; transition: background .3s ease">Join · 1 spot</button>
+                </div>
+              </div>
+            </div>
+            <button type="button" data-game="Court 1 at 20:30" aria-pressed="false" style="border-radius: 18px; padding: 14px; background: #FFFFFF; border: 2px solid transparent; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: Archivo, sans-serif; font-size: 13px; color: #0E1428; text-align: left"><span><span style="display: block; font-weight: 800">Court 1 · Indoor</span><span style="font-size: 11px; color: #5B6478">2 spots · Mixed</span></span><span class="cd" style="font-size: 22px">20:30</span></button>
+            <button type="button" data-game="Court 6 at 21:00" aria-pressed="false" style="border-radius: 18px; padding: 14px; background: #FFFFFF; border: 2px solid transparent; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: Archivo, sans-serif; font-size: 13px; color: #0E1428; text-align: left"><span><span style="display: block; font-weight: 800">Court 6 · Outdoor</span><span style="font-size: 11px; color: #5B6478">3 spots · Level 3</span></span><span class="cd" style="font-size: 22px">21:00</span></button>
+            <button type="button" id="app-cta" style="margin-top: auto; min-height: 52px; border: 0; cursor: pointer; border-radius: 14px; background: #0E1428; color: #C8FF1F; display: flex; align-items: center; justify-content: center; font-family: Archivo, sans-serif; font-size: 15px; font-weight: 800">Book &amp; split · 4 players</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="wrap" style="padding-top: 130px; padding-bottom: 120px">
+    <div class="rv" style="text-align: center; margin-bottom: 56px">
+      <div class="eyebrow">PRICING</div>
+      <h2 class="cd h2" style="margin: 16px 0 16px; font-size: 104px">One plan per club</h2>
+      <p style="margin: 0 auto; max-width: 480px; font-size: 18px; line-height: 1.6; color: #4A5368">Every plan starts with a 14-day free trial, no card needed. Players use the app free. Prices in USD.</p>
+    </div>
+    <div class="rv" style="display: flex; justify-content: center; margin: -16px 0 40px">
+      <div id="billing" role="group" aria-label="Billing period" style="display: flex; gap: 4px; padding: 5px; border-radius: 12px; background: #F2F3EF">
+        <sc-for list="{{bills}}" as="bl" hint-placeholder-count="2">
+          <button type="button" data-bill="{{bl.k}}" aria-pressed="{{bl.on}}" onClick="{{bl.pick}}" style="min-height: 42px; padding: 0 18px; border-radius: 9px; border: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-family: Archivo, sans-serif; font-size: 14px; font-weight: 800; background: {{bl.bg}}; color: {{bl.fg}}; transition: background .25s ease, color .25s ease">{{bl.label}}<sc-if value="{{bl.save}}" hint-placeholder-val="{{false}}"><span style="font-size: 11px; padding: 3px 8px; border-radius: 999px; background: #C8FF1F; color: #0E1428">2 months free</span></sc-if></button>
+        </sc-for>
+      </div>
+    </div>
+    <div class="tiers">
+      <sc-for list="{{tiers}}" as="p" hint-placeholder-count="3">
+        <article class="rv" style="border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 20px; background: {{p.bg}}; color: {{p.fg}}; border: 1px solid {{p.bd}}">
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <span class="cd" style="font-size: 44px">{{p.name}}</span>
+            <sc-if value="{{p.popular}}" hint-placeholder-val="{{false}}">
+              <span style="font-size: 11px; font-weight: 800; padding: 6px 10px; border-radius: 999px; background: #C8FF1F; color: #0E1428">MOST POPULAR</span>
+            </sc-if>
+          </div>
+          <div style="font-size: 14px; color: {{p.sub}}">{{p.for}}</div>
+          <div style="padding-bottom: 20px; border-bottom: 1px solid {{p.rule}}; min-height: 112px"><span class="cd" data-price="" data-m="{{p.pm}}" data-y="{{p.py}}" style="display: inline-block; font-size: 68px">{{p.price}}</span><span data-per="" data-m="{{p.perm}}" data-y="{{p.pery}}" style="display: block; margin-top: 8px; font-size: 14px; color: {{p.sub}}">{{p.per}}</span></div>
+          <div style="display: flex; flex-direction: column; gap: 12px; flex: 1">
+            <sc-for list="{{p.feats}}" as="ft" hint-placeholder-count="4">
+              <span style="display: flex; gap: 10px; align-items: flex-start; font-size: 15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{p.tick}}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg>{{ft}}</span>
+            </sc-for>
+          </div>
+          <a href="{{p.href}}" data-go="{{p.go}}" data-open="{{p.open}}" data-plan="{{p.name}}" class="btn" style="background: {{p.cbg}}; color: {{p.cfg}}; border: 1px solid {{p.cbd}}">{{p.cta}}</a>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="background: #F2F3EF; padding: 120px 0">
+    <div class="wrap" style="max-width: 960px">
+      <h2 class="cd h2 rv" style="margin: 0 0 40px; font-size: 104px">Questions</h2>
+      <div style="display: flex; flex-direction: column; border-top: 1px solid #DADDD6">
+        <sc-for list="{{faqs}}" as="q" hint-placeholder-count="5">
+          <div style="border-bottom: 1px solid #DADDD6">
+            <button type="button" onClick="{{q.toggle}}" aria-expanded="{{q.on}}" style="width: 100%; min-height: 76px; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 0; border: 0; background: transparent; cursor: pointer; text-align: left; font-family: Archivo, sans-serif; font-size: 20px; font-weight: 800; color: #0E1428">
+              {{q.q}}
+              <span style="width: 38px; height: 38px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; background: {{q.ibg}}; transform: rotate({{q.rot}}deg); transition: transform .3s ease, background .3s ease"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1428" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+            </button>
+            <sc-if value="{{q.open}}" hint-placeholder-val="{{false}}">
+              <p style="margin: 0; padding: 0 60px 26px 0; font-size: 17px; line-height: 1.6; color: #4A5368; max-width: 720px">{{q.a}}</p>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" class="wrap" style="padding-top: 140px; padding-bottom: 120px; text-align: center">
+    <h2 class="cd rv" style="margin: 0 auto; font-size: clamp(76px, 12vw, 190px)">Your courts,<br><span style="background: #C8FF1F; padding: 0 16px; box-decoration-break: clone; -webkit-box-decoration-break: clone">in sync.</span></h2>
+    <p class="rv" style="margin: 32px auto 0; max-width: 460px; font-size: 18px; line-height: 1.6; color: #4A5368">Set up your club this afternoon. Your players can book tonight.</p>
+    <div id="trial-box" class="rv" style="max-width: 560px; margin: 32px auto 0">
+      <form id="trial-form" name="trial" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field" onSubmit="{{noSubmit}}" novalidate="" style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap">
+        <input type="hidden" name="form-name" value="trial">
+        <input type="hidden" name="plan" id="trial-plan" value="Club">
+        <input type="hidden" name="billing" id="trial-billing" value="Monthly">
+        <p hidden=""><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <label for="cs-email" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Work email</label>
+        <input id="cs-email" name="email" type="email" required="" autocomplete="email" inputmode="email" placeholder="you@yourclub.com" style="flex: 1 1 260px; height: 56px; border-radius: 12px; padding: 0 20px; font-family: Archivo, sans-serif; font-size: 16px; color: #0E1428; background: #F2F3EF; border: 1px solid #DADDD6; outline-color: #2348E0">
+        <button type="submit" class="btn" style="height: 56px; background: #0E1428; color: #FFFFFF">Start free trial <svg class="ar" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+      </form>
+      <p id="trial-msg" aria-live="polite" style="margin: 16px 0 0; min-height: 22px; font-size: 14px; color: #5B6478">14-day free trial on the <b id="trial-plan-label" style="color: #0E1428">Club</b> plan · No card needed</p>
+    </div>
+    <p class="rv" style="margin: 10px 0 0; font-size: 15px; color: #4A5368">Prefer a walkthrough? <a href="#demo" data-open="demo" style="color: #2348E0; font-weight: 800; text-decoration: underline; text-underline-offset: 3px">Book a 20-minute demo</a></p>
+  </section>
+
+  <footer class="wrap" style="padding-top: 32px; padding-bottom: 44px; border-top: 1px solid #E4E7E1; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; font-size: 14px; color: #5B6478">
+    <a href="#top" style="display: flex; align-items: center; gap: 10px">
+      <span style="width: 30px; height: 30px; border-radius: 9px; background: #0E1428; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8FF1F" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M5.5 6.5c3 2.5 3 8.5 0 11M18.5 6.5c-3 2.5-3 8.5 0 11"></path></svg></span>
+      <span class="cd" style="font-size: 22px">CourtSync</span>
+    </a>
+    <nav aria-label="Footer" style="display: flex; gap: 24px; flex-wrap: wrap">
+      <a href="#how" style="color: #4A5368">How it works</a>
+      <a href="#product" style="color: #4A5368">Product</a>
+      <a href="#players" style="color: #4A5368">Player app</a>
+      <a href="#pricing" style="color: #4A5368">Pricing</a>
+      <a href="#faq" style="color: #4A5368">FAQ</a>
+      <a href="#demo" data-open="demo" style="color: #4A5368">Book a demo</a>
+    </nav>
+    <span style="display: flex; gap: 20px; align-items: center">© 2026 CourtSync <a href="#top" style="color: #0E1428; font-weight: 800">Back to top ↑</a></span>
+  </footer>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":9800}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var s = this.state || {};
+    var self = this;
+    var faqOpen = s.faq == null ? 0 : s.faq;
+    var LIME = '#C8FF1F', INK = '#0E1428', BLUE = '#2348E0';
+
+    var steps = [
+      { n: '01', t: 'Set up your courts', d: 'Add courts, opening hours, peak and off-peak prices and your coaches. Import members from a spreadsheet.', a1: true, a2: false, a3: false, nc: '#D9DCD5' },
+      { n: '02', t: 'Players book & pay', d: 'They pick a slot, invite three friends and everyone pays their share. Open spots go to matchmaking.', a1: false, a2: true, a3: false, nc: '#D9DCD5' },
+      { n: '03', t: 'Play, score, rank', d: 'Scores go in from the court; ladders and leaderboards update before players reach the bar.', a1: false, a2: false, a3: true, nc: BLUE }
+    ];
+
+    // ---- Club timeline (shared with the live site via build) ----
+    var hours = ['07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
+    function hh(i) { var h = 7 + i; return (h < 10 ? '0' : '') + h + ':00'; }
+    // block: [startIndex, span, label, kind, detail]   kinds: b booked, l live, c coaching, o open
+    var tlRaw = [
+      { id: 'today', label: 'Today', rows: [
+        [[0,2,'Doubles','b','Okafor + 3 · all paid'],[3,1,'Coaching','c','Private lesson · Coach Ana'],[9,2,'Doubles','b','Mendes + 3 · all paid'],[11,2,'Open','o',''],[13,2,'League','b','Division 2 · Rivera v Chen']],
+        [[1,2,'Doubles','b','Adeyemi + 3 · all paid'],[5,2,'Open','o',''],[10,2,'Live 6–4','l','Rivera / Okafor v Lindqvist / Mendes · Set 2'],[12,2,'Doubles','b','Silva + 3 · 3 of 4 paid']],
+        [[2,2,'Clinic','c','Beginners clinic · 6 players'],[6,1,'Open','o',''],[9,3,'Americano','b','12 players · mixed'],[13,2,'Open','o','']],
+        [[0,1,'Coaching','c','Private lesson · Coach Luis'],[4,2,'Doubles','b','Bello + 3 · all paid'],[10,2,'Live 30–30','l','League · Adebayo / Chen v Silva / Moreau'],[12,3,'League','b','Division 1 · 2 matches']],
+        [[3,2,'Open','o',''],[8,2,'Doubles','b','Moreau + 3 · all paid'],[10,2,'Coaching','c','Group session · Coach Ana'],[14,2,'Open','o','']],
+        [[1,2,'Doubles','b','Chen + 3 · all paid'],[7,2,'Doubles','b','Okeke + 3 · all paid'],[11,2,'Open','o',''],[13,2,'Doubles','b','Lindqvist + 3 · all paid']]
+      ]},
+      { id: 'tomorrow', label: 'Tomorrow', rows: [
+        [[1,2,'Doubles','b','Bello + 3 · all paid'],[6,2,'Open','o',''],[10,2,'Doubles','b','Okafor + 3 · 2 of 4 paid'],[13,2,'Open','o','']],
+        [[0,1,'Coaching','c','Private lesson · Coach Luis'],[3,2,'Open','o',''],[9,2,'League','b','Division 2 · Mendes v Bello'],[12,2,'Open','o','']],
+        [[2,2,'Doubles','b','Silva + 3 · all paid'],[7,3,'Open','o',''],[11,2,'Clinic','c','Intermediate clinic · 8 players']],
+        [[4,2,'Open','o',''],[10,2,'Doubles','b','Chen + 3 · all paid'],[13,2,'Doubles','b','Adeyemi + 3 · 3 of 4 paid']],
+        [[1,2,'Open','o',''],[8,2,'Coaching','c','Group session · Coach Ana'],[12,3,'Open','o','']],
+        [[0,2,'Doubles','b','Okeke + 3 · all paid'],[5,2,'Open','o',''],[11,2,'Doubles','b','Moreau + 3 · all paid']]
+      ]},
+      { id: 'saturday', label: 'Saturday', rows: [
+        [[1,4,'Tournament','b','Club Open · Round 1'],[6,2,'Doubles','b','Rivera + 3 · all paid'],[9,2,'Open','o',''],[12,3,'Americano','b','16 players · social night']],
+        [[1,4,'Tournament','b','Club Open · Round 1'],[6,2,'Doubles','b','Lindqvist + 3 · all paid'],[10,2,'Doubles','b','Bello + 3 · all paid'],[12,3,'Americano','b','16 players · social night']],
+        [[0,2,'Clinic','c','Juniors clinic · 8 players'],[3,2,'Doubles','b','Okeke + 3 · all paid'],[7,2,'Open','o',''],[11,2,'Doubles','b','Silva + 3 · all paid']],
+        [[1,4,'Tournament','b','Club Open · Round 1'],[6,3,'Final','b','Club Open · Final'],[11,2,'Open','o','']],
+        [[2,2,'Doubles','b','Chen + 3 · all paid'],[5,2,'Coaching','c','Group session · Coach Luis'],[9,2,'Doubles','b','Adeyemi + 3 · all paid'],[13,2,'Open','o','']],
+        [[0,2,'Doubles','b','Mendes + 3 · all paid'],[4,2,'Open','o',''],[8,2,'Doubles','b','Okafor + 3 · all paid'],[12,2,'Doubles','b','Moreau + 3 · all paid']]
+      ]}
+    ];
+    var KIND = {
+      b: { bg: BLUE, fg: '#FFFFFF', bd: '0', tag: 'Booked', tagBg: BLUE, tagFg: '#FFFFFF', tagBd: '0' },
+      l: { bg: LIME, fg: INK, bd: '0', tag: 'Live now', tagBg: LIME, tagFg: INK, tagBd: '0' },
+      c: { bg: INK, fg: '#FFFFFF', bd: '0', tag: 'Coaching', tagBg: INK, tagFg: '#FFFFFF', tagBd: '0' },
+      o: { bg: '#FFFFFF', fg: '#5B6478', bd: '1.5px dashed #C9CDC5', tag: 'Open', tagBg: '#FFFFFF', tagFg: INK, tagBd: '1.5px dashed #9AA2B4' },
+      m: { bg: BLUE, fg: '#FFFFFF', bd: '2px solid ' + LIME, tag: 'Booked by you', tagBg: LIME, tagFg: INK, tagBd: '0' }
+    };
+    var mine = s.mine || {};
+    var dayId = s.day || 'today';
+    var dayData = tlRaw.filter(function (d) { return d.id === dayId; })[0];
+    function firstKey(d) {
+      var pick = null;
+      d.rows.forEach(function (r, c) { r.forEach(function (b, i) { if (!pick && b[3] === 'l') pick = d.id + '-' + c + '-' + i; }); });
+      if (!pick) d.rows.forEach(function (r, c) { r.forEach(function (b, i) { if (!pick && b[3] === 'o') pick = d.id + '-' + c + '-' + i; }); });
+      return pick;
+    }
+    var selKey = (s.sel && s.sel.indexOf(dayId + '-') === 0) ? s.sel : firstKey(dayData);
+    var liveCount = 0;
+    var rows = dayData.rows.map(function (r, c) {
+      return { name: 'Court ' + (c + 1), row: c + 2, blocks: r.map(function (b, i) {
+        var key = dayId + '-' + c + '-' + i;
+        var k = mine[key] ? 'm' : b[3];
+        if (k === 'l') liveCount++;
+        var st = KIND[k];
+        var on = key === selKey;
+        return { key: key, row: c + 2, col: (b[0] + 2) + ' / span ' + b[1], t: k === 'm' ? 'Yours' : b[2], bg: st.bg, fg: st.fg, bd: st.bd,
+          on: on ? 'true' : 'false', ring: on ? '0 0 0 3px ' + INK : 'none',
+          aria: 'Court ' + (c + 1) + ', ' + hh(b[0]) + ' to ' + hh(b[0] + b[1]) + ', ' + st.tag,
+          pick: function () { self.setState({ sel: key }); } };
+      }) };
+    });
+    var tlTabs = tlRaw.map(function (d) {
+      var on = d.id === dayId;
+      return { id: d.id, label: d.label, on: on ? 'true' : 'false', bg: on ? '#FFFFFF' : 'transparent', fg: on ? INK : '#5B6478', sh: on ? '0 1px 3px rgba(14,20,40,0.15)' : 'none', pick: function () { self.setState({ day: d.id, sel: null }); } };
+    });
+    var sp = selKey.split('-'), sc = +sp[1], si = +sp[2], sb = dayData.rows[sc][si];
+    var sk = mine[selKey] ? 'm' : sb[3], sst = KIND[sk];
+    var det = {
+      tag: sst.tag, tagBg: sst.tagBg, tagFg: sst.tagFg, tagBd: sst.tagBd,
+      title: 'Court ' + (sc + 1) + ' · ' + hh(sb[0]) + '–' + hh(sb[0] + sb[1]),
+      who: sk === 'm' ? 'Booked by you · invite 3 players to split the fee' : (sb[4] || 'Free · up to 4 players'),
+      alabel: sk === 'o' ? 'Book this slot' : 'Cancel booking',
+      abg: sk === 'o' ? LIME : '#FFFFFF', afg: INK,
+      vis: (sk === 'o' || sk === 'm') ? 'visible' : 'hidden',
+      act: function () { var m = Object.assign({}, mine); if (m[selKey]) delete m[selKey]; else m[selKey] = true; self.setState({ mine: m }); }
+    };
+
+    var feats = [
+      { t: 'Split payments', d: 'Courts confirm only when all four players have paid.', c: LIME },
+      { t: 'Smart waitlist', d: 'Cancelled slots go straight to players who asked for them.', c: BLUE },
+      { t: 'Peak pricing', d: 'Charge more at 7pm than 2pm, automatically.', c: INK },
+      { t: 'Live scoring', d: 'Scores from the court feed screens, the app and the ladder.', c: LIME }
+    ];
+
+    var text = 'Less admin at the desk. More padel on the court.';
+    var parts = text.split(' ');
+    var words = parts.map(function (t, i) {
+      var a = Math.round(10 + (i / parts.length) * 70);
+      return { t: t, a: a, b: a + 9, c: (t === 'padel' || t === 'court.') ? BLUE : INK };
+    });
+
+    var appFeats = [
+      { n: '01', t: 'Book & split', d: 'Everyone pays their share up front' },
+      { n: '02', t: 'Find a game', d: 'Open spots matched to your level' },
+      { n: '03', t: 'Live scores', d: 'Follow any court from the bar' },
+      { n: '04', t: 'Your stats', d: 'Level and form, season by season' }
+    ];
+
+    // ---- Pricing (USD) ----
+    var yearly = s.bill === 'y';
+    var bills = [
+      { k: 'm', label: 'Monthly', save: false }, { k: 'y', label: 'Yearly', save: true }
+    ].map(function (b) {
+      var on = (b.k === 'y') === yearly;
+      return { k: b.k, label: b.label, save: b.save, on: on ? 'true' : 'false', bg: on ? INK : 'transparent', fg: on ? '#FFFFFF' : INK, pick: function () { self.setState({ bill: b.k }); } };
+    });
+    var tierBase = [
+      { name: 'Starter', for: 'For clubs with up to 4 courts', pm: '$79', py: '$66', perm: 'per month', pery: 'per month · $790 billed yearly', feats: ['Online booking & split payments', 'Player app with your club’s name', 'Waitlist & automatic reminders', 'Email support'], cta: 'Start free trial', popular: false, bg: '#FFFFFF', fg: INK, bd: '#E1E4DE', sub: '#5B6478', rule: '#ECEEE9', tick: BLUE, cbg: '#FFFFFF', cfg: INK, cbd: '#0E1428', href: '#cta', go: 'trial', open: '' },
+      { name: 'Club', for: 'For clubs with 5–12 courts', pm: '$179', py: '$149', perm: 'per month', pery: 'per month · $1,790 billed yearly', feats: ['Everything in Starter', 'Live scoring & club screens', 'Leagues, ladders & Americanos', 'Coach calendars & payouts'], cta: 'Start free trial', popular: true, bg: INK, fg: '#FFFFFF', bd: INK, sub: '#A9B1C7', rule: 'rgba(255,255,255,0.14)', tick: LIME, cbg: LIME, cfg: INK, cbd: LIME, href: '#cta', go: 'trial', open: '' },
+      { name: 'Multi-site', for: 'For groups running 3+ clubs', pm: 'Custom', py: 'Custom', perm: 'priced per club', pery: 'priced per club', feats: ['Everything in Club', 'Memberships across all your clubs', 'Group-wide reporting', 'Dedicated onboarding'], cta: 'Talk to sales', popular: false, bg: '#FFFFFF', fg: INK, bd: '#E1E4DE', sub: '#5B6478', rule: '#ECEEE9', tick: BLUE, cbg: '#FFFFFF', cfg: INK, cbd: '#0E1428', href: '#demo', go: '', open: 'demo' }
+    ];
+    var tiers = tierBase.map(function (t) { return Object.assign({}, t, { price: yearly ? t.py : t.pm, per: yearly ? t.pery : t.perm }); });
+
+    var fq = [
+      { q: 'How long does it take to go live?', a: 'You can add your courts, prices and opening hours in an afternoon and take your first online booking the same day.' },
+      { q: 'Is there a free trial?', a: 'Yes. Every plan starts with 14 days free and no card needed. You only pay if you decide to keep going.' },
+      { q: 'Do players pay for the app?', a: 'No. The player app is free for your members; your club pays one plan price.' },
+      { q: 'Can players split the court fee?', a: 'Yes. Each player pays their share when they join, and the court confirms once everyone has paid.' },
+      { q: 'Can I bring my existing members across?', a: 'Yes. Import them from a spreadsheet and they each get an invite to the app.' },
+      { q: 'How does live scoring work?', a: 'Players tap points on a phone at the court. Scores show in the app and on any screen in your club, and feed straight into rankings.' }
+    ];
+    var faqs = fq.map(function (x, i) {
+      var on = i === faqOpen;
+      return { q: x.q, a: x.a, open: on, on: on ? 'true' : 'false', ibg: on ? LIME : '#FFFFFF', rot: on ? 45 : 0, toggle: function () { self.setState({ faq: on ? -1 : i }); } };
+    });
+
+    return {
+      steps: steps, hours: hours, rows: rows, tlTabs: tlTabs, det: det, tlRaw: tlRaw,
+      liveLabel: liveCount ? liveCount + ' LIVE' : 'NO LIVE MATCHES', liveDot: liveCount ? 'inline-block' : 'none',
+      feats: feats, words: words, appFeats: appFeats, bills: bills, tiers: tiers, faqs: faqs,
+      noSubmit: function (e) { if (e && e.preventDefault) e.preventDefault(); }
+    };
+  }
+}
+</script>
+</body>
+</html>
