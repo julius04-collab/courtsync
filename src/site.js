@@ -210,7 +210,19 @@
 
   /* ---------- forms (Netlify Forms) ---------- */
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  // Hosting on Vercel? Paste your Web3Forms access key here (web3forms.com — free, emails each
+  // submission to you). Leave empty to use Netlify Forms instead.
+  var WEB3FORMS_KEY = '';
   function post(form) {
+    if (WEB3FORMS_KEY) {
+      var fd = new FormData(form);
+      if (fd.get('bot-field')) return Promise.resolve(); // honeypot: silently drop bots
+      var data = { access_key: WEB3FORMS_KEY, from_name: 'CourtSync website', subject: 'CourtSync — new ' + fd.get('form-name') + ' request' };
+      fd.forEach(function (v, k) { if (k !== 'bot-field') data[k] = v; });
+      return fetch('https://api.web3forms.com/submit', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data)
+      }).then(function (r) { return r.json(); }).then(function (j) { if (!j.success) throw new Error(j.message || 'Send failed'); });
+    }
     return fetch('/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

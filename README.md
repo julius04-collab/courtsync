@@ -25,3 +25,9 @@ node build.js design.dc.html ../site/index.html
 
 The trial and demo forms use Netlify Forms (`data-netlify="true"`).
 Enable **Forms → form detection** in Netlify, then redeploy.
+
+## Hosting on Vercel
+
+`vercel.json` serves the `site/` folder with no build step. Netlify Forms don't work on Vercel, so:
+1. Get a free access key at web3forms.com (it emails each submission to you).
+2. Paste it into `WEB3FORMS_KEY` near the forms section of `src/site.js`, rebuild, and push.
