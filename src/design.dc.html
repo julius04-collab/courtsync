@@ -22,29 +22,29 @@ a{color:#0E1428;text-decoration:none}a:hover{color:#2348E0}
 .eyebrow{font-size:12px;font-weight:800;letter-spacing:0.16em;color:#5B6478}
 
 /* ===== HERO ===== */
-.scene{position:relative;height:calc(min(100svh,900px) * 6);view-timeline:--cs block}
-.stage{position:sticky;top:0;height:min(100svh,900px);min-height:640px;overflow:hidden;perspective:1100px;perspective-origin:50% 30%;background:radial-gradient(80% 60% at 50% 40%,#FFFFFF 0%,#F2F3EF 60%,#E6E8E2 100%)}
+.scene{--h:min(100svh,900px);--u:min(1vw,calc(var(--h)/62.5));position:relative;height:calc(var(--h) * 6);view-timeline:--cs block}
+.stage{position:sticky;top:0;height:var(--h);min-height:520px;overflow:hidden;perspective:1100px;perspective-origin:50% 30%;background:radial-gradient(80% 60% at 50% 40%,#FFFFFF 0%,#F2F3EF 60%,#E6E8E2 100%)}
 .lights{position:absolute;left:0;right:0;top:0;height:30%;background:radial-gradient(14% 40% at 22% 0%,rgba(255,255,255,0.9),transparent 70%),radial-gradient(14% 40% at 50% 0%,rgba(255,255,255,0.9),transparent 70%),radial-gradient(14% 40% at 78% 0%,rgba(255,255,255,0.9),transparent 70%);pointer-events:none}
-.court{position:absolute;left:50%;top:50%;width:76vw;height:38vw;margin:-19vw 0 0 -38vw;background:#2348E0;box-shadow:0 0 0 0.7vw rgba(255,255,255,0.9),0 0 0 0.9vw rgba(14,20,40,0.12),0 4vw 8vw -2vw rgba(14,20,40,0.35);transform-origin:50% 50%;transform:translate(0,4vw) scale(1) rotateX(64deg);will-change:transform,opacity}
+.court{position:absolute;left:50%;top:50%;width:calc(var(--u)*76);height:calc(var(--u)*38);margin:calc(var(--u)*-19) 0 0 calc(var(--u)*-38);background:#2348E0;box-shadow:0 0 0 calc(var(--u)*0.7) rgba(255,255,255,0.9),0 0 0 calc(var(--u)*0.9) rgba(14,20,40,0.12),0 calc(var(--u)*4) calc(var(--u)*8) calc(var(--u)*-2) rgba(14,20,40,0.35);transform-origin:50% 50%;transform:translate(0,calc(var(--u)*4)) scale(1) rotateX(64deg);will-change:transform,opacity}
 .court .ln{position:absolute;background:rgba(255,255,255,0.95)}
-.mesh{position:absolute;left:20%;right:20%;height:0.9vw;background:repeating-linear-gradient(90deg,rgba(14,20,40,0.5) 0 2px,transparent 2px 9px)}
-.post{position:absolute;width:0.9vw;height:0.9vw;background:#0E1428}
-.word{position:absolute;top:0;bottom:0;width:50%;display:flex;align-items:center;justify-content:center;color:#C8FF1F;font-size:15vw;opacity:0}
-.pl{position:absolute;width:3vw;height:3vw;margin:-1.5vw 0 0 -1.5vw}
-.pl .sh{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,0.45);transform:translate(0.7vw,0.9vw);filter:blur(0.3vw)}
-.pl .bd{position:absolute;left:-0.4vw;right:-0.4vw;top:0.6vw;bottom:0.6vw;border-radius:50%}
-.pl .hd{position:absolute;left:0.75vw;top:0.75vw;width:1.5vw;height:1.5vw;border-radius:50%}
-.pl .rk{position:absolute;width:1.4vw;height:1.8vw;border-radius:50% 50% 45% 45%;background:#0E1428;border:0.25vw solid #C8FF1F}
-.ball{position:absolute;width:1vw;height:1vw;margin:-0.5vw 0 0 -0.5vw;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F7FFB8,#C8FF1F 55%,#9CC000);box-shadow:0 0 1.8vw 0.4vw rgba(200,255,31,0.85);animation:ball 3.2s cubic-bezier(.45,0,.55,1) infinite}
+.mesh{position:absolute;left:20%;right:20%;height:calc(var(--u)*0.9);background:repeating-linear-gradient(90deg,rgba(14,20,40,0.5) 0 2px,transparent 2px 9px)}
+.post{position:absolute;width:calc(var(--u)*0.9);height:calc(var(--u)*0.9);background:#0E1428}
+.word{position:absolute;top:0;bottom:0;width:50%;display:flex;align-items:center;justify-content:center;color:#C8FF1F;font-size:calc(var(--u)*15);opacity:0}
+.pl{position:absolute;width:calc(var(--u)*3);height:calc(var(--u)*3);margin:calc(var(--u)*-1.5) 0 0 calc(var(--u)*-1.5)}
+.pl .sh{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,0.45);transform:translate(calc(var(--u)*0.7),calc(var(--u)*0.9));filter:blur(calc(var(--u)*0.3))}
+.pl .bd{position:absolute;left:calc(var(--u)*-0.4);right:calc(var(--u)*-0.4);top:calc(var(--u)*0.6);bottom:calc(var(--u)*0.6);border-radius:50%}
+.pl .hd{position:absolute;left:calc(var(--u)*0.75);top:calc(var(--u)*0.75);width:calc(var(--u)*1.5);height:calc(var(--u)*1.5);border-radius:50%}
+.pl .rk{position:absolute;width:calc(var(--u)*1.4);height:calc(var(--u)*1.8);border-radius:50% 50% 45% 45%;background:#0E1428;border:calc(var(--u)*0.25) solid #C8FF1F}
+.ball{position:absolute;width:calc(var(--u)*1);height:calc(var(--u)*1);margin:calc(var(--u)*-0.5) 0 0 calc(var(--u)*-0.5);border-radius:50%;background:radial-gradient(circle at 35% 30%,#F7FFB8,#C8FF1F 55%,#9CC000);box-shadow:0 0 calc(var(--u)*1.8) calc(var(--u)*0.4) rgba(200,255,31,0.85);animation:ball 3.2s cubic-bezier(.45,0,.55,1) infinite}
 @keyframes ball{0%{left:28%;top:70%}25%{left:73%;top:32%}50%{left:80%;top:66%}75%{left:22%;top:34%}100%{left:28%;top:70%}}
 .a1{animation:p1 3.2s ease-in-out infinite}.a2{animation:p2 3.2s ease-in-out infinite}.b1{animation:p3 3.2s ease-in-out infinite}.b2{animation:p4 3.2s ease-in-out infinite}
-@keyframes p1{0%,100%{transform:translate(0,0)}50%{transform:translate(1.2vw,-2vw)}}
-@keyframes p2{0%,100%{transform:translate(0,0)}25%{transform:translate(1.5vw,0.8vw)}75%{transform:translate(-1vw,-1vw)}}
-@keyframes p3{0%,100%{transform:translate(0,0)}25%{transform:translate(-1vw,1.4vw)}}
-@keyframes p4{0%,100%{transform:translate(0,0)}50%{transform:translate(-1.6vw,-1.2vw)}}
+@keyframes p1{0%,100%{transform:translate(0,0)}50%{transform:translate(calc(var(--u)*1.2),calc(var(--u)*-2))}}
+@keyframes p2{0%,100%{transform:translate(0,0)}25%{transform:translate(calc(var(--u)*1.5),calc(var(--u)*0.8))}75%{transform:translate(calc(var(--u)*-1),calc(var(--u)*-1))}}
+@keyframes p3{0%,100%{transform:translate(0,0)}25%{transform:translate(calc(var(--u)*-1),calc(var(--u)*1.4))}}
+@keyframes p4{0%,100%{transform:translate(0,0)}50%{transform:translate(calc(var(--u)*-1.6),calc(var(--u)*-1.2))}}
 .glass{position:absolute;inset:0;z-index:3;pointer-events:none;transform-origin:50% 45%}
 .pane{position:absolute;inset:0;background:linear-gradient(180deg,rgba(170,195,230,0.10),rgba(170,195,230,0.03) 60%,rgba(170,195,230,0.10)),linear-gradient(112deg,transparent 14%,rgba(255,255,255,0.55) 17%,rgba(255,255,255,0.12) 21%,transparent 23%),linear-gradient(112deg,transparent 56%,rgba(255,255,255,0.4) 58%,transparent 62%),linear-gradient(112deg,transparent 70%,rgba(255,255,255,0.3) 71%,transparent 72.5%)}
-.mark{position:absolute;left:0;right:0;bottom:calc(50% + 6vw + max(2vw, 16px));z-index:2;text-align:center;color:#0E1428;font-size:min(15vw,22svh,198px);pointer-events:none;transform-origin:50% 100%}
+.mark{position:absolute;left:0;right:0;bottom:calc(50% + var(--u)*6 + max(var(--u)*2, 16px));z-index:2;text-align:center;color:#0E1428;font-size:max(48px,min(calc(var(--u)*15),22svh,198px,calc((var(--h)/2 - var(--u)*8 - 126px)/0.84)));pointer-events:none;transform-origin:50% 100%}
 .cap{opacity:0}
 .gl{background:rgba(255,255,255,0.62);border:1px solid rgba(255,255,255,0.9);box-shadow:0 20px 50px -24px rgba(14,20,40,0.35),inset 0 1px 0 rgba(255,255,255,0.9);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4)}
 .hint{animation:hint 1.8s ease-in-out infinite}
@@ -71,14 +71,14 @@ a{color:#0E1428;text-decoration:none}a:hover{color:#2348E0}
 .court,.glass,.mark,.word,.cap,.lede,.lights{animation-timing-function:linear;animation-fill-mode:both;animation-timeline:--cs;animation-range:contain 0% contain 100%}
 .court{animation-name:rise}
 @keyframes rise{
-0%,8%{transform:translate(0,4vw) scale(1) rotateX(64deg);opacity:1}
+0%,8%{transform:translate(0,calc(var(--u)*4)) scale(1) rotateX(64deg);opacity:1}
 42%,52%{transform:translate(0,0) scale(1) rotateX(0deg);opacity:1}
-70%,78%{transform:translate(0,-7vw) scale(0.62) rotateX(0deg);opacity:1}
-100%{transform:translate(0,-22vw) scale(0.4) rotateX(0deg);opacity:0}}
+70%,78%{transform:translate(0,calc(var(--u)*-7)) scale(0.62) rotateX(0deg);opacity:1}
+100%{transform:translate(0,calc(var(--u)*-22)) scale(0.4) rotateX(0deg);opacity:0}}
 .glass{animation-name:glass}
 @keyframes glass{0%,8%{opacity:1;transform:scale(1)}26%,100%{opacity:0;transform:scale(2.4)}}
 .mark{animation-name:mark}
-@keyframes mark{0%,8%{opacity:1;transform:translateY(0) scale(1)}22%,100%{opacity:0;transform:translateY(-6vw) scale(1.08)}}
+@keyframes mark{0%,8%{opacity:1;transform:translateY(0) scale(1)}22%,100%{opacity:0;transform:translateY(calc(var(--u)*-6)) scale(1.08)}}
 .word{animation-name:word}
 @keyframes word{0%,28%{opacity:0}40%,100%{opacity:1}}
 .cap{animation-name:cap}
@@ -119,32 +119,32 @@ a{color:#0E1428;text-decoration:none}a:hover{color:#2348E0}
     <div class="lights" aria-hidden="true"></div>
 
     <div class="court" aria-hidden="true">
-      <span class="ln" style="left: 0; right: 0; top: 0; height: 0.35vw"></span>
-      <span class="ln" style="left: 0; right: 0; bottom: 0; height: 0.35vw"></span>
-      <span class="ln" style="top: 0; bottom: 0; left: 0; width: 0.35vw"></span>
-      <span class="ln" style="top: 0; bottom: 0; right: 0; width: 0.35vw"></span>
-      <span class="ln" style="top: 0; bottom: 0; left: 15.25%; width: 0.3vw"></span>
-      <span class="ln" style="top: 0; bottom: 0; left: 84.75%; width: 0.3vw"></span>
-      <span class="ln" style="left: 15.25%; right: 15.25%; top: 50%; height: 0.3vw; margin-top: -0.15vw"></span>
-      <span class="mesh" style="top: -1.6vw"></span>
-      <span class="mesh" style="bottom: -1.6vw"></span>
-      <span class="post" style="left: -1.6vw; top: -1.6vw"></span>
-      <span class="post" style="right: -1.6vw; top: -1.6vw"></span>
-      <span class="post" style="left: -1.6vw; bottom: -1.6vw"></span>
-      <span class="post" style="right: -1.6vw; bottom: -1.6vw"></span>
-      <span class="post" style="left: 20%; top: -1.6vw"></span>
-      <span class="post" style="left: 80%; top: -1.6vw"></span>
-      <span class="post" style="left: 20%; bottom: -1.6vw"></span>
-      <span class="post" style="left: 80%; bottom: -1.6vw"></span>
+      <span class="ln" style="left: 0; right: 0; top: 0; height: calc(var(--u)*0.35)"></span>
+      <span class="ln" style="left: 0; right: 0; bottom: 0; height: calc(var(--u)*0.35)"></span>
+      <span class="ln" style="top: 0; bottom: 0; left: 0; width: calc(var(--u)*0.35)"></span>
+      <span class="ln" style="top: 0; bottom: 0; right: 0; width: calc(var(--u)*0.35)"></span>
+      <span class="ln" style="top: 0; bottom: 0; left: 15.25%; width: calc(var(--u)*0.3)"></span>
+      <span class="ln" style="top: 0; bottom: 0; left: 84.75%; width: calc(var(--u)*0.3)"></span>
+      <span class="ln" style="left: 15.25%; right: 15.25%; top: 50%; height: calc(var(--u)*0.3); margin-top: calc(var(--u)*-0.15)"></span>
+      <span class="mesh" style="top: calc(var(--u)*-1.6)"></span>
+      <span class="mesh" style="bottom: calc(var(--u)*-1.6)"></span>
+      <span class="post" style="left: calc(var(--u)*-1.6); top: calc(var(--u)*-1.6)"></span>
+      <span class="post" style="right: calc(var(--u)*-1.6); top: calc(var(--u)*-1.6)"></span>
+      <span class="post" style="left: calc(var(--u)*-1.6); bottom: calc(var(--u)*-1.6)"></span>
+      <span class="post" style="right: calc(var(--u)*-1.6); bottom: calc(var(--u)*-1.6)"></span>
+      <span class="post" style="left: 20%; top: calc(var(--u)*-1.6)"></span>
+      <span class="post" style="left: 80%; top: calc(var(--u)*-1.6)"></span>
+      <span class="post" style="left: 20%; bottom: calc(var(--u)*-1.6)"></span>
+      <span class="post" style="left: 80%; bottom: calc(var(--u)*-1.6)"></span>
       <span class="word cd" style="left: 0">Court</span>
       <span class="word cd" style="right: 0">Sync</span>
-      <span style="position: absolute; left: 50%; top: -2.4vw; bottom: -2.4vw; width: 0.55vw; margin-left: -0.27vw; background: #0E1428; box-shadow: 0.5vw 0.3vw 0.6vw rgba(0,0,0,0.45)"></span>
-      <span style="position: absolute; left: 50%; top: -2.8vw; width: 1.4vw; height: 1.4vw; margin-left: -0.7vw; border-radius: 50%; background: #0E1428"></span>
-      <span style="position: absolute; left: 50%; bottom: -2.8vw; width: 1.4vw; height: 1.4vw; margin-left: -0.7vw; border-radius: 50%; background: #0E1428"></span>
-      <span class="pl a1" style="left: 18%; top: 30%"><span class="sh"></span><span class="bd" style="background: #F4F4F0"></span><span class="hd" style="background: #0E1428"></span><span class="rk" style="left: 2.6vw; top: -0.8vw"></span></span>
-      <span class="pl a2" style="left: 30%; top: 72%"><span class="sh"></span><span class="bd" style="background: #F4F4F0"></span><span class="hd" style="background: #FFFFFF; box-shadow: inset 0 0 0 0.25vw #0E1428"></span><span class="rk" style="left: 2.6vw; top: 1.4vw"></span></span>
-      <span class="pl b1" style="left: 70%; top: 28%"><span class="sh"></span><span class="bd" style="background: #0E1428; box-shadow: 0 0 0 0.2vw rgba(255,255,255,0.5)"></span><span class="hd" style="background: #C8FF1F"></span><span class="rk" style="left: -1.6vw; top: -0.6vw"></span></span>
-      <span class="pl b2" style="left: 82%; top: 70%"><span class="sh"></span><span class="bd" style="background: #0E1428; box-shadow: 0 0 0 0.2vw rgba(255,255,255,0.5)"></span><span class="hd" style="background: #F4F4F0"></span><span class="rk" style="left: -1.6vw; top: 1.4vw"></span></span>
+      <span style="position: absolute; left: 50%; top: calc(var(--u)*-2.4); bottom: calc(var(--u)*-2.4); width: calc(var(--u)*0.55); margin-left: calc(var(--u)*-0.27); background: #0E1428; box-shadow: calc(var(--u)*0.5) calc(var(--u)*0.3) calc(var(--u)*0.6) rgba(0,0,0,0.45)"></span>
+      <span style="position: absolute; left: 50%; top: calc(var(--u)*-2.8); width: calc(var(--u)*1.4); height: calc(var(--u)*1.4); margin-left: calc(var(--u)*-0.7); border-radius: 50%; background: #0E1428"></span>
+      <span style="position: absolute; left: 50%; bottom: calc(var(--u)*-2.8); width: calc(var(--u)*1.4); height: calc(var(--u)*1.4); margin-left: calc(var(--u)*-0.7); border-radius: 50%; background: #0E1428"></span>
+      <span class="pl a1" style="left: 18%; top: 30%"><span class="sh"></span><span class="bd" style="background: #F4F4F0"></span><span class="hd" style="background: #0E1428"></span><span class="rk" style="left: calc(var(--u)*2.6); top: calc(var(--u)*-0.8)"></span></span>
+      <span class="pl a2" style="left: 30%; top: 72%"><span class="sh"></span><span class="bd" style="background: #F4F4F0"></span><span class="hd" style="background: #FFFFFF; box-shadow: inset 0 0 0 calc(var(--u)*0.25) #0E1428"></span><span class="rk" style="left: calc(var(--u)*2.6); top: calc(var(--u)*1.4)"></span></span>
+      <span class="pl b1" style="left: 70%; top: 28%"><span class="sh"></span><span class="bd" style="background: #0E1428; box-shadow: 0 0 0 calc(var(--u)*0.2) rgba(255,255,255,0.5)"></span><span class="hd" style="background: #C8FF1F"></span><span class="rk" style="left: calc(var(--u)*-1.6); top: calc(var(--u)*-0.6)"></span></span>
+      <span class="pl b2" style="left: 82%; top: 70%"><span class="sh"></span><span class="bd" style="background: #0E1428; box-shadow: 0 0 0 calc(var(--u)*0.2) rgba(255,255,255,0.5)"></span><span class="hd" style="background: #F4F4F0"></span><span class="rk" style="left: calc(var(--u)*-1.6); top: calc(var(--u)*1.4)"></span></span>
       <span class="ball"></span>
     </div>
 
